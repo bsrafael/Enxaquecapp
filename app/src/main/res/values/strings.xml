@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Enxaquecapp</string>
+    <string name="email">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="content_description_person">Ícone de uma pessoa</string>
+    <string name="content_description_lock">Ícone de um cadeado</string>
+    <string name="login">Entrar</string>
+    <string name="create_account">Criar conta</string>
+    <string name="app_name">Enxaquecapp</string>
+    <string name="name">Nome</string>
+    <string name="password_repeat">Repita a senha</string>
+    <string name="birth">Nascimento</string>
+    <string name="gender">Sexo</string>
+    <string name="male">Masculino</string>
+    <string name="female">Feminino</string>
+    <string name="date_format">DD/MM/AAAA</string>
+</resources>
