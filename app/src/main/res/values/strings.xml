@@ -1,17 +1,39 @@
 <resources>
     <string name="app_name">Enxaquecapp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Enxaquecapp</string>
+    <string name="nav_header_subtitle">meajuda@enxaquecapp.com</string>
+    <string name="nav_header_desc">Cabeçalho do menu</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Início</string>
+    <string name="menu_about">Sobre o app</string>
+    <string name="menu_medicines">Medicamentos</string>
+    <string name="menu_account">Minha conta</string>
+    <string name="menu_history">Histórico</string>
+
+
+
+
     <string name="email">E-mail</string>
-    <string name="password">Senha</string>
     <string name="content_description_person">Ícone de uma pessoa</string>
+    <string name="password">Senha</string>
     <string name="content_description_lock">Ícone de um cadeado</string>
     <string name="login">Entrar</string>
     <string name="create_account">Criar conta</string>
-    <string name="app_name">Enxaquecapp</string>
     <string name="name">Nome</string>
     <string name="password_repeat">Repita a senha</string>
     <string name="birth">Nascimento</string>
-    <string name="gender">Sexo</string>
+    <string name="date_format">DD/MM/AAAA</string>
     <string name="male">Masculino</string>
     <string name="female">Feminino</string>
-    <string name="date_format">DD/MM/AAAA</string>
+    <string name="about_title">Sobre o App</string>
+    <string name="about_text">Enxaquecapp é um aplicativo para auxiliar pessoas com dor de cabeça.\n
+        Aqui, o usuário consegue relatar com simplicidade um novo episódio.\n
+        O objetivo do app é simplificar o processo de cadastro, e fornecer alguns relatórios com base nos dados do usuário. Os apps atuais exigem muito, são complicados demais. Ninguém quer fazer isso quando está com dor de cabeça.
+        \n\n
+        O aplicativo foi desenvolvido por Rafael Bourscheid da Silveira e Julio César Sotoriva de Bastiani para a disciplina de Projeto Temático: Aplicativo Móvel\n
+        O software é composto por um app em Android nativo usando Kotlin, uma API em C# e um banco de dados.
+    </string>
 </resources>
