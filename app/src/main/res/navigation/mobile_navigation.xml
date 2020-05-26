@@ -9,7 +9,20 @@
         android:id="@+id/nav_home"
         android:name="com.enxaquecapp.app.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_nav_home_to_nav_about"
+            app:destination="@id/nav_about" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_medicines"
+            app:destination="@id/nav_medicines" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_case"
+            app:destination="@id/nav_case" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_history"
+            app:destination="@id/nav_history" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_about"
@@ -44,4 +57,7 @@
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit" />
     </fragment>
+    <fragment android:id="@+id/nav_medicines" />
+    <fragment android:id="@+id/nav_case" />
+    <fragment android:id="@+id/nav_history" />
 </navigation>

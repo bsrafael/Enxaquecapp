@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.ui.login.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.app_bar_main.*
 
 class HomeFragment : Fragment() {
 
@@ -40,6 +41,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        with (requireActivity().toolbar ) {
+            this?.visibility = View.VISIBLE
+        }
+
+        with(requireActivity().actionBar){
+            this?.show()
+        }
+        with(requireActivity().fab) {
+            this?.show()
+        }
 
         val navController = findNavController()
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
@@ -33,13 +34,12 @@ class LoginFragment: Fragment() {
         return root
     }
 
-    /**
-     *  TODO: Mock authentication
-     *  TODO: Keep following https://developer.android.com/guide/navigation/navigation-conditional
-     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        with (requireActivity().toolbar ) {
+            this?.visibility = GONE
+        }
 
         with(requireActivity().actionBar){
             this?.hide()
