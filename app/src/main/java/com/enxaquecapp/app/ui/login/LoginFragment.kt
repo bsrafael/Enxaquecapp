@@ -3,6 +3,7 @@ package com.enxaquecapp.app.ui.login
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -14,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
+import com.enxaquecapp.app.enums.AuthenticationState
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -48,12 +50,12 @@ class LoginFragment: Fragment() {
             this?.hide()
         }
 
-
         login_submit.setOnClickListener {
             var email = login_email.editText!!.text.toString()
             var password = login_password.editText!!.text.toString()
 
             if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) ) {
+                Log.i("LoginFragment", "autenticando")
                 loginViewModel.authenticate(email, password)
             } else {
                 Snackbar.make(view, "Ops! Preencha os dois campos", Snackbar.LENGTH_SHORT).show()
@@ -72,8 +74,8 @@ class LoginFragment: Fragment() {
         val navController = findNavController()
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> navController.navigate(R.id.action_login_fragment_to_nav_home)
-                LoginViewModel.AuthenticationState.INVALID_AUTHENTICATION -> showErrorMessage()
+                AuthenticationState.AUTHENTICATED -> navController.navigate(R.id.action_login_fragment_to_nav_home)
+                AuthenticationState.INVALID_AUTHENTICATION -> showErrorMessage()
             }
         })
     }

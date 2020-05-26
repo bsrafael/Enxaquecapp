@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
+import com.enxaquecapp.app.enums.AuthenticationState
 import com.enxaquecapp.app.ui.login.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -56,8 +57,8 @@ class HomeFragment : Fragment() {
         val navController = findNavController()
         loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
             when (authenticationState) {
-                LoginViewModel.AuthenticationState.AUTHENTICATED -> showWelcomeMessage()
-                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.login_fragment)
+                AuthenticationState.AUTHENTICATED -> showWelcomeMessage()
+                AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.login_fragment)
             }
         })
     }
