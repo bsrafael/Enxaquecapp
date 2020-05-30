@@ -36,4 +36,6 @@
         O aplicativo foi desenvolvido por Rafael Bourscheid da Silveira e Julio César Sotoriva de Bastiani para a disciplina de Projeto Temático: Aplicativo Móvel\n
         O software é composto por um app em Android nativo usando Kotlin, uma API em C# e um banco de dados.
     </string>
+    <string name="register">Registre-se</string>
+    <string name="gender">Gênero</string>
 </resources>

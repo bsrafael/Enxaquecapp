@@ -1,6 +1,7 @@
 package com.enxaquecapp.app.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +15,14 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.enums.AuthenticationState
+import com.enxaquecapp.app.shared.State
 import com.enxaquecapp.app.ui.login.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
-
-    private val loginViewModel: LoginViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -30,18 +30,14 @@ class HomeFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
+
 
         with (requireActivity().toolbar ) {
             this?.visibility = View.VISIBLE
@@ -54,13 +50,25 @@ class HomeFragment : Fragment() {
             this?.show()
         }
 
-        val navController = findNavController()
-        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+        homeViewModel.update()
+
+        State.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            Log.i("HomeFragment", "observe ${authenticationState}")
             when (authenticationState) {
                 AuthenticationState.AUTHENTICATED -> showWelcomeMessage()
-                AuthenticationState.UNAUTHENTICATED -> navController.navigate(R.id.login_fragment)
+                AuthenticationState.UNAUTHENTICATED -> findNavController().navigate(R.id.login_fragment)
             }
         })
+
+        homeViewModel.greetingText.observe(viewLifecycleOwner, Observer {
+            home_greeting_text.text = it
+        })
+
+        homeViewModel.casesText.observe(viewLifecycleOwner, Observer {
+            home_cases_text.text = it
+        })
+
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun showWelcomeMessage() {
@@ -70,7 +78,6 @@ class HomeFragment : Fragment() {
                 "Boas vindas!",
                 Snackbar.LENGTH_SHORT)
             .show()
-
     }
 
 }

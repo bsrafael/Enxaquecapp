@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment: Fragment() {
-
+    
 
     private val loginViewModel: LoginViewModel by activityViewModels()
 

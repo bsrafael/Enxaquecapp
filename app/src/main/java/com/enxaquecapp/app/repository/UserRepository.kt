@@ -1,36 +1,34 @@
 package com.enxaquecapp.app.repository
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.enxaquecapp.app.enums.AuthenticationState
+import com.enxaquecapp.app.model.Case
 import com.enxaquecapp.app.model.User
+import com.enxaquecapp.app.shared.State
 import java.util.*
 
 class UserRepository {
 
-    var authenticationState = MutableLiveData<AuthenticationState>()
-    var authState = AuthenticationState.UNAUTHENTICATED
-    lateinit var user: User
-
 
     init {
-        // In this example, the user is always unauthenticated when MainActivity is launched
-//        authenticationState.value = AuthenticationState.UNAUTHENTICATED
     }
 
-    fun refuseAuthentication() {
-        authenticationState.postValue(AuthenticationState.UNAUTHENTICATED)
+    fun refuseAuthentication(): AuthenticationState {
+        State.authenticationState.postValue(AuthenticationState.UNAUTHENTICATED)
+        return AuthenticationState.UNAUTHENTICATED
     }
 
-    fun authenticate(email: String, password: String) {
+    fun authenticate(email: String, password: String): AuthenticationState {
         Log.i("UserRepository", "autenticando")
-        if (passwordIsValidForEmail(email, password)) {
-            user = getUser(email)
-            authenticationState.value = AuthenticationState.AUTHENTICATED
+        return if (passwordIsValidForEmail(email, password)) {
+            State.user.postValue( fetchUser(email) )
+            State.authenticationState.postValue( AuthenticationState.AUTHENTICATED )
             Log.i("UserRepository", "user autenticado")
+            AuthenticationState.AUTHENTICATED
         } else {
-            authenticationState.value = AuthenticationState.INVALID_AUTHENTICATION
             Log.i("UserRepository", "autenticação inválida")
+            State.authenticationState.postValue( AuthenticationState.INVALID_AUTHENTICATION )
+            AuthenticationState.INVALID_AUTHENTICATION
         }
     }
 
@@ -40,15 +38,22 @@ class UserRepository {
     }
 
     /** TODO [API]: Link to Backend **/
-    private fun getUser(email: String): User {
-        return User(
-            "Sample Name",
-            email,
-            Date(),
-            21,
-            'M',
-            "s4mpl3t0kEn"
+    private fun fetchUser(email: String): User {
+        var user: User = User(
+            name ="Sample Name",
+            email = email,
+            birth = Date(),
+            age = 21,
+            gender = 'M',
+            token = "s4mpl3t0kEn"
         )
+        user.cases = fetchCases(email)
+        State.user.postValue(user)
+        return user
+    }
+
+    private fun fetchCases(email: String): MutableList<Case> {
+        return mutableListOf<Case>()
     }
 
 }

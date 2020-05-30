@@ -16,22 +16,21 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.enums.AuthenticationState
+import com.enxaquecapp.app.shared.State
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment: Fragment() {
 
-    private val loginViewModel: LoginViewModel by activityViewModels()
+    private val loginViewModel: LoginViewModel by activityViewModels<LoginViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val root = inflater.inflate(R.layout.fragment_login, container, false)
-
 
         return root
     }
@@ -68,14 +67,17 @@ class LoginFragment: Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             loginViewModel.refuseAuthentication()
-//            navController.popBackStack(R.id.main_fragment, false)
         }
 
         val navController = findNavController()
-        loginViewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            when (authenticationState) {
+        State.authenticationState.observe(viewLifecycleOwner, Observer { state ->
+            Log.i("LoginFragment", "observe: ${state}")
+            when (state) {
                 AuthenticationState.AUTHENTICATED -> navController.navigate(R.id.action_login_fragment_to_nav_home)
                 AuthenticationState.INVALID_AUTHENTICATION -> showErrorMessage()
+                else -> {
+                    Log.i("LoginFragment", "observe else ${state}")
+                }
             }
         })
     }

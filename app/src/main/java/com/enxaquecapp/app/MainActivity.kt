@@ -13,6 +13,9 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.enxaquecapp.app.enums.AuthenticationState
+import com.enxaquecapp.app.shared.State
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -40,6 +43,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_medicines), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+        State.authenticationState.value = AuthenticationState.UNAUTHENTICATED
 
     }
 
