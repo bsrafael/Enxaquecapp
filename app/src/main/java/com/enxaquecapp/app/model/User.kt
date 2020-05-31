@@ -8,7 +8,7 @@ data class User(
     var birth: Date,
     var age: Int,
     var gender: Char,
-    var token: String,
+    var token: String = "",
     var cases: MutableList<Case> = mutableListOf()
 )
 

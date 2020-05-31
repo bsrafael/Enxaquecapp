@@ -60,6 +60,10 @@ class HomeFragment : Fragment() {
             }
         })
 
+        State.user.observe(viewLifecycleOwner, Observer {user ->
+            Log.i("HomeFragment", "user: $user")
+        })
+
         homeViewModel.greetingText.observe(viewLifecycleOwner, Observer {
             home_greeting_text.text = it
         })

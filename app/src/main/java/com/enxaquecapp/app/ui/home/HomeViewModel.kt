@@ -19,6 +19,7 @@ class HomeViewModel : ViewModel() {
 
         State.user.observeForever {
             user = it
+            update()
         }
     }
 
