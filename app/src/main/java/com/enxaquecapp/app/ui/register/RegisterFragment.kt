@@ -15,6 +15,9 @@ import com.enxaquecapp.app.model.User
 import com.enxaquecapp.app.ui.login.LoginViewModel
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_register.*
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 
 class RegisterFragment: Fragment() {
@@ -73,18 +76,17 @@ class RegisterFragment: Fragment() {
     private fun submit() {
         Log.i("RegisterFragment", "submitting")
         val birth = getBirthDate(register_birth.editText!!.text.toString())
-        val age = getAge(birth)
         val gender = getGender()
 
         val user = User(
             name = register_name.editText!!.text.toString(),
             email = register_email.editText!!.text.toString(),
-            birth = birth,
-            age = age,
-            gender = gender
+            birthDate = birth,
+            gender = gender,
+            age = 0
         )
 
-        registerViewModel.register(user)
+        registerViewModel.register(user, register_password.editText!!.text.toString())
 
         findNavController().navigate(R.id.action_register_fragment_to_nav_home)
 
@@ -92,19 +94,14 @@ class RegisterFragment: Fragment() {
 
     /** TODO: Cast string to date **/
     private fun getBirthDate(birthString: String): Date {
-        return Date()
+        return SimpleDateFormat("dd-MM-yyyy").parse(birthString)
     }
 
-    /** TODO: Generate age from date **/
-    private fun getAge(birth: Date): Int {
-        return 21
-    }
-
-    private fun getGender(): Char {
+    private fun getGender(): String {
         return when(register_gender.checkedRadioButtonId) {
-            register_gender_male.id -> 'M'
-            register_gender_female.id -> 'F'
-            else -> '?'
+            register_gender_male.id -> "Masculino"
+            register_gender_female.id -> "Feminino"
+            else -> "Não Informado"
         }
     }
 

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.enxaquecapp.app.enums.AuthenticationState
 import com.enxaquecapp.app.model.User
-import com.enxaquecapp.app.repository.UserRepository
 import com.enxaquecapp.app.shared.State
 
 class HomeViewModel : ViewModel() {
@@ -37,6 +36,8 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun buildCasesText() : String {
-        return "Você teve ${user.cases.size} nos últimos dias."
+        // return "Você teve ${user.cases.size} nos últimos dias."
+        // TODO(julio) fix this
+        return "Você teve n nos últimos dias."
     }
 }

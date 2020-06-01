@@ -8,5 +8,6 @@ class State {
     companion object {
         val authenticationState: MutableLiveData<AuthenticationState> = MutableLiveData<AuthenticationState>()
         var user: MutableLiveData<User> = MutableLiveData<User>()
+        var token: MutableLiveData<String> = MutableLiveData<String>()
     }
 }

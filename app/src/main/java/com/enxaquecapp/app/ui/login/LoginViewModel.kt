@@ -19,15 +19,9 @@ class LoginViewModel : ViewModel() {
         val client = AuthenticationClient()
         client.getToken(TokenInputModel(email, password), object: ApiCallback<TokenViewModel> {
             override fun success(response: TokenViewModel) {
-                State.user.postValue(User(
-                    name ="Sample Name",
-                    email = email,
-                    birth = Date(),
-                    age = 21,
-                    gender = 'M'
-                ))
-
-                State.authenticationState.postValue( AuthenticationState.AUTHENTICATED )
+                State.user.postValue(response.user)
+                State.token.postValue(response.token)
+                State.authenticationState.postValue(AuthenticationState.AUTHENTICATED)
                 Log.i("UserRepository", "user autenticado")
             }
 
@@ -40,6 +34,6 @@ class LoginViewModel : ViewModel() {
     }
 
     fun refuseAuthentication() {
-        State.authenticationState.postValue(AuthenticationState.UNAUTHENTICATED)
+        State.authenticationState.postValue(AuthenticationState.INVALID_AUTHENTICATION)
     }
 }

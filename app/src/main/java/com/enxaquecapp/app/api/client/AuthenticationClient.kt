@@ -5,6 +5,7 @@ import com.enxaquecapp.app.api.ApiCallback
 import com.enxaquecapp.app.api.ClientFactory
 import com.enxaquecapp.app.api.models.input.TokenInputModel
 import com.enxaquecapp.app.api.models.view.TokenViewModel
+import com.enxaquecapp.app.shared.State
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,7 +13,7 @@ import retrofit2.Response
 class AuthenticationClient {
 
     fun getToken(im: TokenInputModel, callback: ApiCallback<TokenViewModel>) {
-        val call = ClientFactory().authenticationService().authenticate(im)
+        val call = ClientFactory(State.token.value).authenticationService().authenticate(im)
         call.enqueue(object : Callback<TokenViewModel?> {
             override fun onResponse(call: Call<TokenViewModel?>?, response: Response<TokenViewModel?>?) {
                 response?.body()?.let {

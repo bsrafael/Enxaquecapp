@@ -1,3 +1,8 @@
 package com.enxaquecapp.app.api.models.view
 
-data class TokenViewModel(val token: String)
+import com.enxaquecapp.app.model.User
+
+data class TokenViewModel(
+    val token: String,
+    val user: User
+)
