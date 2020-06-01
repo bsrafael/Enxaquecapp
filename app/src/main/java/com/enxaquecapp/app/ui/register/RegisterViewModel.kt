@@ -32,12 +32,17 @@ class RegisterViewModel: ViewModel() {
                 State.user.postValue(response.user)
                 State.token.postValue(response.token)
                 State.authenticationState.postValue(AuthenticationState.AUTHENTICATED)
-                Log.i("UserRepository", "user autenticado")
+                Log.i("UserRepository", "usuário criado com sucesso")
+            }
+
+            override fun failure(errorCode: Int, message: String) {
+                Log.i("UserRepository", "falha ao criar o usuário ($errorCode) $message")
+                State.authenticationState.postValue(AuthenticationState.INVALID_AUTHENTICATION)
             }
 
             override fun error() {
-                Log.i("UserRepository", "autenticação inválida")
-                State.authenticationState.postValue(AuthenticationState.INVALID_AUTHENTICATION)
+                Log.e("UserRepository", "falha interna na criação do usuário")
+                State.authenticationState.postValue(AuthenticationState.UNAUTHENTICATED)
             }
         })
     }

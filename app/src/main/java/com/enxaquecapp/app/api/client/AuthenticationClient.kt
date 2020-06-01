@@ -15,10 +15,17 @@ class AuthenticationClient {
     fun getToken(im: TokenInputModel, callback: ApiCallback<TokenViewModel>) {
         val call = ClientFactory(State.token.value).authenticationService().authenticate(im)
         call.enqueue(object : Callback<TokenViewModel?> {
+
             override fun onResponse(call: Call<TokenViewModel?>?, response: Response<TokenViewModel?>?) {
                 response?.body()?.let {
                     val vm: TokenViewModel = it
                     callback.success(vm)
+                }
+
+                response?.errorBody()?.let {
+                    val errorCode = response.code()
+                    val message = it.string()
+                    callback.failure(errorCode, message)
                 }
             }
 

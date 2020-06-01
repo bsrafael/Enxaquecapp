@@ -25,9 +25,14 @@ class LoginViewModel : ViewModel() {
                 Log.i("UserRepository", "user autenticado")
             }
 
-            override fun error() {
-                Log.i("UserRepository", "autenticação inválida")
+            override fun failure(errorCode: Int, message: String) {
+                Log.i("UserRepository", "autenticação inválida: ($errorCode) $message")
                 State.authenticationState.postValue(AuthenticationState.INVALID_AUTHENTICATION)
+            }
+
+            override fun error() {
+                Log.e("UserRepository", "falha na autenticação")
+                State.authenticationState.postValue(AuthenticationState.UNAUTHENTICATED)
             }
         })
 

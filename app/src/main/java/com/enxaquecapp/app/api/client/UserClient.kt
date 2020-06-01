@@ -16,10 +16,17 @@ class UserClient {
     fun getCurrent(callback: ApiCallback<User>) {
         val call = ClientFactory(State.token.value).userService().getCurrent()
         call.enqueue(object : Callback<User?> {
+
             override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
                 response?.body()?.let {
-                val vm: User = it
-                callback.success(vm)
+                    val vm: User = it
+                    callback.success(vm)
+                }
+
+                response?.errorBody()?.let {
+                    val errorCode = response.code()
+                    val message = it.string()
+                    callback.failure(errorCode, message)
                 }
             }
 
@@ -33,6 +40,7 @@ class UserClient {
     fun register(im: UserInputModel, callback: ApiCallback<TokenViewModel>) {
         val call = ClientFactory(State.token.value).userService().register(im)
         call.enqueue(object : Callback<TokenViewModel?> {
+
             override fun onResponse(call: Call<TokenViewModel?>?, response: Response<TokenViewModel?>?) {
                 response?.body()?.let {
                     val vm: TokenViewModel = it
@@ -40,7 +48,9 @@ class UserClient {
                 }
 
                 response?.errorBody()?.let {
-                    Log.e("APi error:", it.string())
+                    val errorCode = response.code()
+                    val message = it.string()
+                    callback.failure(errorCode, message)
                 }
             }
 
