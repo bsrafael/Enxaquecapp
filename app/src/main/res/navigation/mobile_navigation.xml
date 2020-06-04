@@ -60,4 +60,19 @@
     <fragment android:id="@+id/nav_medicines" />
     <fragment android:id="@+id/nav_case" />
     <fragment android:id="@+id/nav_history" />
+
+    <fragment
+        android:id="@+id/episodeFragment"
+        android:name="com.enxaquecapp.app.ui.episode.EpisodeFragment"
+        android:label="EpisodeFragment"
+        tools:layout="@layout/fragment_episode"/>
+
+
+    <action
+        android:id="@+id/action_global_episodeFragment"
+        app:destination="@id/episodeFragment"
+        app:enterAnim="@anim/fragment_open_enter"
+        app:exitAnim="@anim/fragment_close_exit"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 </navigation>

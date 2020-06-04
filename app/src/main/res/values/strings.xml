@@ -38,5 +38,19 @@
     </string>
     <string name="register">Registre-se</string>
     <string name="gender">Gênero</string>
-    <string name="case_duration_title">Duração</string>
+    <string name="episode_duration_title">Duração</string>
+    <string name="start">Início</string>
+    <string name="end">Fim</string>
+    <string name="episode_intensity_title">Intensidade</string>
+    <string name="episode_causes_title">Causas</string>
+    <string name="episode_causes_place_title">Onde você estava?</string>
+    <string name="place_request">Onde você estava?</string>
+    <string name="episode_triggers_title">O que pode ter causado?</string>
+    <string name="trigger_request">O que pode ter causado?</string>
+    <string name="episode_helped">Ajudou?</string>
+    <string name="episode_relief_title">Alívio</string>
+    <string name="episode_action">O que você fez?</string>
+    <string name="cancel">Cancelar</string>
+    <string name="remindme">Lembrar</string>
+    <string name="save">Salvar</string>
 </resources>
