@@ -1,28 +1,23 @@
 package com.enxaquecapp.app.ui.episode
 
-import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
-import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.EditText
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.model.Case
-import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_episode.*
-import java.util.*
+import kotlin.math.roundToInt
+
 
 class EpisodeFragment : Fragment() {
     val viewModel: EpisodeViewModel by activityViewModels()
@@ -44,12 +39,41 @@ class EpisodeFragment : Fragment() {
             this?.hide()
         }
 
+        createStepValueSeekbar(0, 10, 1)
         addButtonListeners()
         addPlaceOptions()
         addTriggersOptions()
 
         super.onViewCreated(view, savedInstanceState)
     }
+
+
+    private fun createStepValueSeekbar(
+        min: Int,
+        max: Int,
+        step: Int,
+        currentValue: Int = 0
+    ) {
+        episode_intensity_seekbar.max = 10
+        episode_intensity_seekbar.progress = calculateProgress(currentValue, min, max, step)
+        episode_intensity_seekbar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onProgressChanged(
+                seekBar: SeekBar,
+                progress: Int,
+                fromUser: Boolean
+            ) {
+                val value =
+                    (progress * (max - min) / 10.toFloat()).roundToInt()
+            }
+        })
+    }
+
+    private fun calculateProgress(value: Int, MIN: Int, MAX: Int, STEP: Int): Int {
+        return (100 * (value - MIN)) / (MAX - MIN);
+    }
+
 
 
     private fun buildCase(): Case {

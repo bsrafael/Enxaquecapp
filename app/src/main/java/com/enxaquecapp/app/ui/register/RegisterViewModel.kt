@@ -14,6 +14,13 @@ import java.util.*
 
 class RegisterViewModel: ViewModel() {
 
+    var user: User? = null
+    get() {
+        if (field == null)
+            field = State.user.value
+        return field
+    }
+
     fun register(user: User, password: String) {
         Log.i("RegisterViewModel", "registrando")
 
@@ -45,5 +52,9 @@ class RegisterViewModel: ViewModel() {
                 State.authenticationState.postValue(AuthenticationState.UNAUTHENTICATED)
             }
         })
+    }
+
+    fun update(user: User, password: String) {
+        Log.i("RegisterViewModel", "atualizando")
     }
 }

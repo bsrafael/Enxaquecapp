@@ -35,6 +35,8 @@
         \n\n
         O aplicativo foi desenvolvido por Rafael Bourscheid da Silveira e Julio César Sotoriva de Bastiani para a disciplina de Projeto Temático: Aplicativo Móvel\n
         O software é composto por um app em Android nativo usando Kotlin, uma API em C# e um banco de dados.
+        \n\n\n
+        Ícone de enxaqueca por <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> no <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
     </string>
     <string name="register">Registre-se</string>
     <string name="gender">Gênero</string>
@@ -53,4 +55,5 @@
     <string name="cancel">Cancelar</string>
     <string name="remindme">Lembrar</string>
     <string name="save">Salvar</string>
+    <string name="submit">Enviar</string>
 </resources>

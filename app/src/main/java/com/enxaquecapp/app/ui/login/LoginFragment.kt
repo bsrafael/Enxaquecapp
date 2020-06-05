@@ -62,7 +62,10 @@ class LoginFragment: Fragment() {
         }
 
         login_register.setOnClickListener {
-            findNavController().navigate(R.id.action_login_fragment_to_register_fragment)
+            val destination = LoginFragmentDirections
+                .actionLoginFragmentToRegisterFragment( getString(R.string.register), true )
+            findNavController().navigate(destination)
+
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
