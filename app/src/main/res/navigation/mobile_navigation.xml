@@ -45,7 +45,7 @@
     <fragment
         android:id="@+id/login_fragment"
         android:name="com.enxaquecapp.app.ui.login.LoginFragment"
-        android:label="login_fragment"
+        android:label="Login"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_login_fragment_to_register_fragment"
@@ -62,10 +62,11 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
     <fragment
         android:id="@+id/register_fragment"
         android:name="com.enxaquecapp.app.ui.register.RegisterFragment"
-        android:label="register_fragment"
+        android:label="Minha conta"
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_register_fragment_to_nav_home"
@@ -88,7 +89,7 @@
     <fragment
         android:id="@+id/episodeFragment"
         android:name="com.enxaquecapp.app.ui.episode.EpisodeFragment"
-        android:label="EpisodeFragment"
+        android:label="Novo episódio"
         tools:layout="@layout/fragment_episode"/>
 
 
