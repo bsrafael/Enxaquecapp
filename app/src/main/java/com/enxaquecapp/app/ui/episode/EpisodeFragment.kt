@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
-import com.enxaquecapp.app.model.Case
+import com.enxaquecapp.app.model.Episode
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_episode.*
 import kotlin.math.roundToInt
@@ -21,7 +21,7 @@ import kotlin.math.roundToInt
 
 class EpisodeFragment : Fragment() {
     val viewModel: EpisodeViewModel by activityViewModels()
-    lateinit var case: Case
+    lateinit var case: Episode
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,8 +76,8 @@ class EpisodeFragment : Fragment() {
 
 
 
-    private fun buildCase(): Case {
-        return Case(
+    private fun buildCase(): Episode {
+        return Episode(
         )
     }
 
