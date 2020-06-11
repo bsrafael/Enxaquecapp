@@ -33,4 +33,5 @@ class ClientFactory(token: String? = null) {
     fun reliefService(): ReliefService = retrofit.create(ReliefService::class.java)
 
     fun episodeService(): EpisodeService = retrofit.create(EpisodeService::class.java)
+    fun medicationService(): MedicationService = retrofit.create(MedicationService::class.java)
 }
