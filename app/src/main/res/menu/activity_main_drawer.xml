@@ -11,8 +11,7 @@
 
         <item
             android:id="@+id/nav_medicines"
-            android:title="@string/menu_medicines"
-            android:enabled="false" />
+            android:title="@string/menu_medicines" />
 
         <item
             android:id="@+id/action_global_register_fragment"
