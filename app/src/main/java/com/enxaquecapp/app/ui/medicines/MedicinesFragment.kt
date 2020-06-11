@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enxaquecapp.app.R
+import com.enxaquecapp.app.api.models.input.MedicationInputModel
 import com.enxaquecapp.app.extensions.validate
 import com.enxaquecapp.app.model.Medicine
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -40,7 +41,7 @@ class MedicinesFragment: Fragment() {
 
     private var medicines: MutableList<Medicine> = mutableListOf()
 
-    private var loadedMedicine: Int? = null
+    private var loadedMedicine: UUID? = null
 
 
 
@@ -172,10 +173,12 @@ class MedicinesFragment: Fragment() {
     private fun submitMedicine() {
         progress.visibility = View.VISIBLE
         viewModel.add(
-            Medicine(
+            MedicationInputModel(
                 name = medicine_field_name.editText!!.text.toString(),
+                description = "no description",
                 start = getStartDate(medicine_start_date.editText!!.text.toString()),
-                hourInterval = medicine_interval.editText!!.text.toString()
+                hourInterval = medicine_interval.editText!!.text.toString(),
+                totalDoses = 0 // TODO(Rafael) actually use this
             )
         )
         clearMedicine()
