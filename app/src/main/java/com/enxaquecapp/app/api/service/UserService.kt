@@ -17,5 +17,5 @@ interface UserService {
     fun register(@Body im: UserInputModel): Call<TokenViewModel>
 
     @PATCH("users")
-    fun update(im: UserPatchInputModel): Call<User>
+    fun update(@Body im: UserPatchInputModel): Call<User>
 }

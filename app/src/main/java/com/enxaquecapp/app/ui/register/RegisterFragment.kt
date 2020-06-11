@@ -120,7 +120,6 @@ class RegisterFragment: Fragment() {
                         Log.i("RegisterFragment", "observe else ${state}")
                     }
                 }
-
             })
         }
         else {
@@ -137,9 +136,11 @@ class RegisterFragment: Fragment() {
                 gender = gender.ifEmpty { null }
             )
 
-            Toast.makeText(context, "TODO: update", Toast.LENGTH_LONG).show()
             registerViewModel.update(user)
-            findNavController().navigate(R.id.action_register_fragment_to_nav_home)
+
+            State.user.observe(viewLifecycleOwner, Observer {state ->
+                findNavController().navigate(R.id.action_register_fragment_to_nav_home)
+            })
         }
 
 
