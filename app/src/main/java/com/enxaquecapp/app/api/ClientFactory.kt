@@ -31,4 +31,6 @@ class ClientFactory(token: String? = null) {
     fun causeService(): CauseService = retrofit.create(CauseService::class.java)
     fun locationService(): LocationService = retrofit.create(LocationService::class.java)
     fun reliefService(): ReliefService = retrofit.create(ReliefService::class.java)
+
+    fun episodeService(): EpisodeService = retrofit.create(EpisodeService::class.java)
 }

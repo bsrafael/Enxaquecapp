@@ -6,6 +6,7 @@ import com.enxaquecapp.app.api.ApiCallback
 import com.enxaquecapp.app.api.client.UserClient
 import com.enxaquecapp.app.api.models.input.TokenInputModel
 import com.enxaquecapp.app.api.models.input.UserInputModel
+import com.enxaquecapp.app.api.models.input.UserPatchInputModel
 import com.enxaquecapp.app.api.models.view.TokenViewModel
 import com.enxaquecapp.app.enums.AuthenticationState
 import com.enxaquecapp.app.model.User
@@ -21,19 +22,12 @@ class RegisterViewModel: ViewModel() {
         return field
     }
 
-    fun register(user: User, password: String) {
+    fun register(user: UserInputModel) {
         Log.i("RegisterViewModel", "registrando")
 
         val client = UserClient()
-        val im = UserInputModel(
-            name = user.name,
-            email = user.email,
-            password = password,
-            birthDate = user.birthDate,
-            gender = user.gender
-        )
 
-        client.register(im, object: ApiCallback<TokenViewModel> {
+        client.register(user, object: ApiCallback<TokenViewModel> {
 
             override fun success(response: TokenViewModel) {
                 State.user.postValue(response.user)
@@ -54,7 +48,27 @@ class RegisterViewModel: ViewModel() {
         })
     }
 
-    fun update(user: User, password: String) {
+    fun update(user: UserPatchInputModel) {
         Log.i("RegisterViewModel", "atualizando")
+
+        val client = UserClient()
+
+        client.update(user, object: ApiCallback<User> {
+
+            override fun success(response: User) {
+                State.user.postValue(response)
+                Log.i("UserRepository", "usuário criado com sucesso")
+            }
+
+            override fun failure(errorCode: Int, message: String) {
+                Log.i("UserRepository", "falha ao criar o usuário ($errorCode) $message")
+                // TODO(rafael) show the message?
+            }
+
+            override fun error() {
+                Log.e("UserRepository", "falha interna na criação do usuário")
+                // TODO(rafael) show the message?
+            }
+        })
     }
 }

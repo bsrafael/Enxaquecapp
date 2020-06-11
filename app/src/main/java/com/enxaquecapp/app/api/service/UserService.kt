@@ -16,6 +16,6 @@ interface UserService {
     @POST("users")
     fun register(@Body im: UserInputModel): Call<TokenViewModel>
 
-    @PATCH("users/{id}")
-    fun update(@Path("id") id: UUID, im: UserPatchInputModel): Call<User>
+    @PATCH("users")
+    fun update(im: UserPatchInputModel): Call<User>
 }

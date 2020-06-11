@@ -3,24 +3,24 @@ package com.enxaquecapp.app.api.client
 import android.util.Log
 import com.enxaquecapp.app.api.ApiCallback
 import com.enxaquecapp.app.api.ClientFactory
-import com.enxaquecapp.app.api.models.input.UserInputModel
-import com.enxaquecapp.app.api.models.input.UserPatchInputModel
-import com.enxaquecapp.app.api.models.view.TokenViewModel
+import com.enxaquecapp.app.model.Cause
+import com.enxaquecapp.app.model.Location
+import com.enxaquecapp.app.model.Relief
 import com.enxaquecapp.app.model.User
 import com.enxaquecapp.app.shared.State
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserClient {
+class OptionClient {
 
-    fun getCurrent(callback: ApiCallback<User>) {
-        val call = ClientFactory(State.token.value).userService().getCurrent()
-        call.enqueue(object : Callback<User?> {
+    fun getCauses(callback: ApiCallback<List<Cause>>) {
+        val call = ClientFactory(State.token.value).causeService().getCauses()
+        call.enqueue(object : Callback<List<Cause>?> {
 
-            override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
+            override fun onResponse(call: Call<List<Cause>?>?, response: Response<List<Cause>?>?) {
                 response?.body()?.let {
-                    val vm: User = it
+                    val vm: List<Cause> = it
                     callback.success(vm)
                 }
 
@@ -31,20 +31,20 @@ class UserClient {
                 }
             }
 
-            override fun onFailure(call: Call<User?>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<Cause>?>?, t: Throwable?) {
                 Log.e("onFailure error", t?.message)
                 callback.error()
             }
         })
     }
 
-    fun register(im: UserInputModel, callback: ApiCallback<TokenViewModel>) {
-        val call = ClientFactory(State.token.value).userService().register(im)
-        call.enqueue(object : Callback<TokenViewModel?> {
+    fun getReliefs(callback: ApiCallback<List<Relief>>) {
+        val call = ClientFactory(State.token.value).reliefService().getReliefs()
+        call.enqueue(object : Callback<List<Relief>?> {
 
-            override fun onResponse(call: Call<TokenViewModel?>?, response: Response<TokenViewModel?>?) {
+            override fun onResponse(call: Call<List<Relief>?>?, response: Response<List<Relief>?>?) {
                 response?.body()?.let {
-                    val vm: TokenViewModel = it
+                    val vm: List<Relief> = it
                     callback.success(vm)
                 }
 
@@ -55,20 +55,20 @@ class UserClient {
                 }
             }
 
-            override fun onFailure(call: Call<TokenViewModel?>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<Relief>?>?, t: Throwable?) {
                 Log.e("onFailure error", t?.message)
                 callback.error()
             }
         })
     }
 
-    fun update(im: UserPatchInputModel, callback: ApiCallback<User>) {
-        val call = ClientFactory(State.token.value).userService().update(im)
-        call.enqueue(object : Callback<User?> {
+    fun getLocations(callback: ApiCallback<List<Location>>) {
+        val call = ClientFactory(State.token.value).locationService().getLocations()
+        call.enqueue(object : Callback<List<Location>?> {
 
-            override fun onResponse(call: Call<User?>?, response: Response<User?>?) {
+            override fun onResponse(call: Call<List<Location>?>?, response: Response<List<Location>?>?) {
                 response?.body()?.let {
-                    val vm: User = it
+                    val vm: List<Location> = it
                     callback.success(vm)
                 }
 
@@ -79,7 +79,7 @@ class UserClient {
                 }
             }
 
-            override fun onFailure(call: Call<User?>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<Location>?>?, t: Throwable?) {
                 Log.e("onFailure error", t?.message)
                 callback.error()
             }
