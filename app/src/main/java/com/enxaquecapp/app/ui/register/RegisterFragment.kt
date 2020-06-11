@@ -17,14 +17,12 @@ import com.enxaquecapp.app.enums.AuthenticationState
 import com.enxaquecapp.app.extensions.validate
 import com.enxaquecapp.app.model.User
 import com.enxaquecapp.app.shared.State
-import com.enxaquecapp.app.ui.login.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.Date
+import java.util.*
+
 
 class RegisterFragment: Fragment() {
 

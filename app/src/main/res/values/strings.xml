@@ -56,4 +56,9 @@
     <string name="remindme">Lembrar</string>
     <string name="save">Salvar</string>
     <string name="submit">Enviar</string>
+    <string name="add_medicine">Adicionar medicamento</string>
+    <string name="medicine_name">Nome do medicamento</string>
+    <string name="discard">Descartar</string>
+    <string name="interval">Intervalo</string>
+    <string name="my_medicines">Meus medicamentos</string>
 </resources>

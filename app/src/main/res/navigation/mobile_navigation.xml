@@ -83,7 +83,6 @@
             android:name="comingFromLogin"
             app:argType="boolean" />
     </fragment>
-    <fragment android:id="@+id/nav_medicines" />
     <fragment android:id="@+id/nav_history" />
 
     <fragment
@@ -122,5 +121,11 @@
             />
 
     </action>
+    <fragment
+        android:id="@+id/nav_medicines"
+        android:name="com.enxaquecapp.app.ui.medicines.MedicinesFragment"
+        android:label="MedicinesFragment"
+        tools:layout="@layout/fragment_medicines"
+        />
 
 </navigation>
