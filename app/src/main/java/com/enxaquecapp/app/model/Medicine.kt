@@ -6,5 +6,5 @@ data class Medicine(
     var id: Int? = null,
     val name: String,
     val start: Date,
-    val hourInterval: String
+    val hourInterval: Interval
 )

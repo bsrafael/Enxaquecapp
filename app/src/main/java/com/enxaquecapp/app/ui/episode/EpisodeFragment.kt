@@ -1,6 +1,9 @@
 package com.enxaquecapp.app.ui.episode
 
+import android.app.TimePickerDialog
+import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +17,29 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.model.Case
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_episode.*
+import kotlinx.android.synthetic.main.fragment_medicines.*
+import java.util.*
 import kotlin.math.roundToInt
 
 
 class EpisodeFragment : Fragment() {
     val viewModel: EpisodeViewModel by activityViewModels()
     lateinit var case: Case
+
+
+    private lateinit var startDateBuilder: MaterialDatePicker.Builder<Long>
+    private lateinit var startDatePicker: MaterialDatePicker<Long>
+
+    private lateinit var startTimePicker: TimePickerDialog
+    private lateinit var endTimePicker: TimePickerDialog
+
+    private lateinit var endDateBuilder: MaterialDatePicker.Builder<Long>
+    private lateinit var endDatePicker: MaterialDatePicker<Long>
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +62,40 @@ class EpisodeFragment : Fragment() {
         addPlaceOptions()
         addTriggersOptions()
 
+//        buildDialogs()
+
         super.onViewCreated(view, savedInstanceState)
+    }
+
+
+    private fun buildDateDialogs() {
+        startDateBuilder = MaterialDatePicker.Builder.datePicker()
+        startDateBuilder.setTitleText("Data de início")
+        startDatePicker = startDateBuilder.build()
+        startDatePicker.addOnPositiveButtonClickListener {
+            episode_start_date.editText!!.setText( "$it" )
+        }
+
+
+        endDateBuilder = MaterialDatePicker.Builder.datePicker()
+        endDateBuilder.setTitleText("Data de início")
+        endDatePicker = endDateBuilder.build()
+        endDatePicker.addOnPositiveButtonClickListener {
+            episode_end_date.editText!!.setText( "$it" )
+        }
+    }
+
+    private fun buildTimeDialog() {
+
+        val c: Calendar = Calendar.getInstance();
+        val mHour = c.get(Calendar.HOUR_OF_DAY);
+        val mMinute = c.get(Calendar.MINUTE);
+
+        TimePickerDialog(context,
+            OnTimeSetListener { view, hourOfDay, minute ->
+                Log.i("f","$hourOfDay:$minute")
+            }
+            , mHour, mMinute, true)
     }
 
 

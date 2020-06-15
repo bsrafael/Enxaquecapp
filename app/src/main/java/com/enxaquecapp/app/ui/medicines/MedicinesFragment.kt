@@ -1,12 +1,13 @@
 package com.enxaquecapp.app.ui.medicines
 
-import android.app.AlertDialog
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -20,8 +21,10 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fragment_episode.*
 import kotlinx.android.synthetic.main.fragment_medicines.*
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 
 
@@ -33,7 +36,6 @@ class MedicinesFragment: Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-
 
     private lateinit var builder: MaterialDatePicker.Builder<Long>
     private lateinit var picker: MaterialDatePicker<Long>
@@ -52,6 +54,7 @@ class MedicinesFragment: Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_medicines, container, false)
 
+        viewModel.update()
         return root
     }
 
@@ -62,6 +65,7 @@ class MedicinesFragment: Fragment() {
         setupRecyclerView()
         addListeners()
         buildDateDialog()
+        buildMedicineIntervals()
 
         viewModel.medicines.observe(viewLifecycleOwner, Observer {
             medicines.clear()
@@ -79,7 +83,6 @@ class MedicinesFragment: Fragment() {
                 loadMedicine(medicines[index])
             }
         })
-
 
         recyclerView = medicines_rv.apply {
             setHasFixedSize(true)
@@ -105,9 +108,9 @@ class MedicinesFragment: Fragment() {
         }
 
         medicine_start_date.setOnClickListener {
+            Snackbar.make(requireView(), "Abrindo calendário", Snackbar.LENGTH_SHORT).show()
             if (!picker.isVisible) {
                 picker.show(childFragmentManager, "Medicines Date Picker")
-                Snackbar.make(requireView(), "Abrindo calendário", Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -127,16 +130,13 @@ class MedicinesFragment: Fragment() {
                         dialog.dismiss()
                     }
                     .setPositiveButton("Tenho") {dialog, which ->
-                        // TODO: not working
-                        viewModel.remove(id)
-                        progress.visibility = View.VISIBLE
+                        Log.i("MedicinesFrag", "excluindo medicamento")
+                        removeMedicine(id)
                     }
                     .show()
             }
-
         }
     }
-
 
     private fun hideFab() {
         with(requireActivity().fab) {
@@ -152,21 +152,21 @@ class MedicinesFragment: Fragment() {
             &&
             medicine_interval.editText!!.validate("De quanto em quanto tempo você toma?") { it.isNotEmpty() }
         )
-
     }
 
     /**
      * TODO: A data está vindo um dia antes
      * **/
     private fun getStartDate(dateString: String): Date {
-        return SimpleDateFormat("dd/MM/yyyy").parse(dateString)
+        return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).parse(dateString)!!
+
     }
     private fun getStartDateString(dateLong: Long): String {
-        return SimpleDateFormat("dd/MM/yyyy").format(Date(dateLong))
+        return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(Date(dateLong))
     }
 
     private fun getStartDateString(date: Date): String {
-        return SimpleDateFormat("dd/MM/yyyy").format(date)
+        return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(date)
     }
 
     private fun submitMedicine() {
@@ -175,26 +175,41 @@ class MedicinesFragment: Fragment() {
             Medicine(
                 name = medicine_field_name.editText!!.text.toString(),
                 start = getStartDate(medicine_start_date.editText!!.text.toString()),
-                hourInterval = medicine_interval.editText!!.text.toString()
+                hourInterval = viewModel.getInterval(medicine_interval.editText!!.text.toString())
             )
         )
-        clearMedicine()
+        clearMedicineForm()
     }
 
-    private fun clearMedicine() {
+    private fun removeMedicine(id: Int) {
+        viewModel.remove(id)
+        progress.visibility = View.VISIBLE
+        clearMedicineForm()
+    }
+
+    private fun buildMedicineIntervals() {
+        val items = viewModel.getIntervalArray()
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.dropdown_list_item,
+            items)
+        (medicine_interval.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
+    private fun clearMedicineForm() {
         medicine_field_name.editText!!.apply {
             error = null
-            setText(" ")
+            setText("")
         }
 
         medicine_start_date.editText!!.apply {
             error = null
-            setText(" ")
+            setText("")
         }
 
         medicine_interval.editText!!.apply {
             error = null
-            setText(" ")
+            setText("")
         }
 
     }
@@ -212,9 +227,8 @@ class MedicinesFragment: Fragment() {
     private fun loadMedicine(med: Medicine) {
         medicine_field_name.editText!!.setText(med.name)
         medicine_start_date.editText!!.setText(getStartDateString(med.start))
-        medicine_interval.editText!!.setText(med.hourInterval)
+        medicine_interval.editText!!.setText(med.hourInterval.displayValue)
         loadedMedicine = med.id
-
     }
 
 

@@ -26,20 +26,20 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/episode_date_layout"
+                android:id="@+id/episode_start_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/episode_intensity_layout"
+                app:layout_constraintBottom_toTopOf="@id/episode_end_layout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/episode_duration_title"
+                    android:id="@+id/episode_start_title"
                     style="@style/TextAppearance.AppCompat.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/episode_duration_title"
+                    android:text="@string/episode_start_title"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -53,11 +53,11 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginBottom="8dp"
 
-                    android:hint="@string/start"
+                    android:hint="@string/date"
                     app:helperTextEnabled="true"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/episode_end_date"
-                    app:layout_constraintTop_toBottomOf="@id/episode_duration_title">
+                    app:layout_constraintRight_toLeftOf="@id/episode_start_time"
+                    app:layout_constraintTop_toBottomOf="@id/episode_start_title">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/episode_end_date"
+                    android:id="@+id/episode_start_time"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -78,12 +78,84 @@
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="8dp"
 
-                    android:hint="@string/end"
+                    android:hint="@string/time"
                     app:helperTextEnabled="true"
                     app:layout_constraintLeft_toRightOf="@id/episode_start_date"
 
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/episode_duration_title">
+                    app:layout_constraintTop_toBottomOf="@id/episode_start_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/episode_end_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintBottom_toTopOf="@id/episode_intensity_layout"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/episode_start_layout">
+
+                <TextView
+                    android:id="@+id/episode_end_title"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/episode_end_title"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/episode_end_date"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="8dp"
+
+                    android:hint="@string/date"
+                    app:helperTextEnabled="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/episode_end_time"
+                    app:layout_constraintTop_toBottomOf="@id/episode_end_title">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/episode_end_time"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="8dp"
+
+                    android:hint="@string/time"
+                    app:helperTextEnabled="true"
+                    app:layout_constraintLeft_toRightOf="@id/episode_end_date"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/episode_end_title">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -105,7 +177,7 @@
                 app:layout_constraintBottom_toTopOf="@id/episode_causes_layout"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/episode_date_layout">
+                app:layout_constraintTop_toBottomOf="@id/episode_end_layout">
 
                 <TextView
                     android:id="@+id/episode_intensity_title"

@@ -61,4 +61,8 @@
     <string name="discard">Descartar</string>
     <string name="interval">Intervalo</string>
     <string name="my_medicines">Meus medicamentos</string>
+    <string name="episode_end_title">Fim</string>
+    <string name="episode_start_title">Início</string>
+    <string name="time">Hora</string>
+    <string name="date">Data</string>
 </resources>
