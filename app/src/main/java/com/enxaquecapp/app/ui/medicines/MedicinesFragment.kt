@@ -17,15 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.extensions.validate
 import com.enxaquecapp.app.model.Medicine
+import com.enxaquecapp.app.shared.StringUtils
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.fragment_episode.*
 import kotlinx.android.synthetic.main.fragment_medicines.*
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.*
 
 
 class MedicinesFragment: Fragment() {
@@ -154,27 +151,12 @@ class MedicinesFragment: Fragment() {
         )
     }
 
-    /**
-     * TODO: A data está vindo um dia antes
-     * **/
-    private fun getStartDate(dateString: String): Date {
-        return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).parse(dateString)!!
-
-    }
-    private fun getStartDateString(dateLong: Long): String {
-        return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(Date(dateLong))
-    }
-
-    private fun getStartDateString(date: Date): String {
-        return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(date)
-    }
-
     private fun submitMedicine() {
         progress.visibility = View.VISIBLE
         viewModel.add(
             Medicine(
                 name = medicine_field_name.editText!!.text.toString(),
-                start = getStartDate(medicine_start_date.editText!!.text.toString()),
+                start = StringUtils.strToDate(medicine_start_date.editText!!.text.toString()),
                 hourInterval = viewModel.getInterval(medicine_interval.editText!!.text.toString())
             )
         )
@@ -219,14 +201,14 @@ class MedicinesFragment: Fragment() {
         builder.setTitleText("Data de início")
         picker = builder.build()
         picker.addOnPositiveButtonClickListener {
-            medicine_start_date.editText!!.setText( getStartDateString(it) )
+            medicine_start_date.editText!!.setText( StringUtils.dateToString(it) )
         }
         Log.i("MedicinesFrag", "dialog builded")
     }
 
     private fun loadMedicine(med: Medicine) {
         medicine_field_name.editText!!.setText(med.name)
-        medicine_start_date.editText!!.setText(getStartDateString(med.start))
+        medicine_start_date.editText!!.setText(StringUtils.dateToString(med.start))
         medicine_interval.editText!!.setText(med.hourInterval.displayValue)
         loadedMedicine = med.id
     }
