@@ -1,3 +1,8 @@
 package com.enxaquecapp.app.model
 
-data class Relief(val description: String)
+import java.util.*
+
+data class Relief(
+    val id: UUID,
+    val description: String
+)

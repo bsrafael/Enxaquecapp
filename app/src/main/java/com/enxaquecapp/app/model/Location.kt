@@ -1,3 +1,8 @@
 package com.enxaquecapp.app.model
 
-data class Location(val description: String)
+import java.util.*
+
+data class Location(
+    val id: UUID,
+    val description: String
+)

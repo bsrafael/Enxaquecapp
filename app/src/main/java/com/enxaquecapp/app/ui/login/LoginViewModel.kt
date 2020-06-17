@@ -13,6 +13,24 @@ import java.util.*
 
 class LoginViewModel : ViewModel() {
 
+    /** This method serves the sole purpose of hitting Heroku API for it to be turned on. **/
+    fun turnOnApi() {
+        val client = AuthenticationClient()
+        client.getToken(TokenInputModel("boot@enxaquecapp.com", "sudo"), object: ApiCallback<TokenViewModel> {
+            override fun success(response: TokenViewModel) {
+                Log.i("LoginVM", "Heroku is alive!")
+            }
+
+            override fun failure(errorCode: Int, message: String) {
+                Log.i("LoginVM", "Heroku is waking up: ($errorCode) $message")
+            }
+
+            override fun error() {
+                Log.e("LoginVM", "Internal error")
+            }
+        })
+    }
+
     fun authenticate(email: String, password: String) {
         Log.i("LoginViewModel", "autenticando")
 

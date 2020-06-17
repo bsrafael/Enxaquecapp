@@ -1,7 +1,7 @@
 package com.enxaquecapp.app.api
 
-import com.enxaquecapp.app.api.service.AutheticationService
-import com.enxaquecapp.app.api.service.UserService
+import com.enxaquecapp.app.api.service.*
+import com.enxaquecapp.app.model.Relief
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,4 +27,11 @@ class ClientFactory(token: String? = null) {
 
     fun authenticationService(): AutheticationService = retrofit.create(AutheticationService::class.java)
     fun userService(): UserService = retrofit.create(UserService::class.java)
+
+    fun causeService(): CauseService = retrofit.create(CauseService::class.java)
+    fun locationService(): LocationService = retrofit.create(LocationService::class.java)
+    fun reliefService(): ReliefService = retrofit.create(ReliefService::class.java)
+
+    fun episodeService(): EpisodeService = retrofit.create(EpisodeService::class.java)
+    fun medicationService(): MedicationService = retrofit.create(MedicationService::class.java)
 }

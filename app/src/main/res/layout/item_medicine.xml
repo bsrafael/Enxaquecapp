@@ -3,17 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/item_medicine_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Nome do medicamento"
+        tools:text="Nome do medicamento"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textStyle="bold"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
         app:layout_constraintWidth_percent="0.65" />
     
     <LinearLayout
@@ -41,11 +42,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="8/8h"
+            tools:text="8/8h"
             />
 
     </LinearLayout>
-            
-            
+
+    <TextView
+        android:id="@+id/item_medicine_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/item_medicine_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/item_medicine_doses"
+        tools:text="Descrição do medicamento"
+
+        />
+
+    <TextView
+        android:id="@+id/item_medicine_doses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/item_medicine_description"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Doses tomadas: 1/10"
+        />
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

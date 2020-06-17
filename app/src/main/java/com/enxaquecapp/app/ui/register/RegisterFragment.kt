@@ -13,6 +13,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.enxaquecapp.app.R
+import com.enxaquecapp.app.api.models.input.UserInputModel
+import com.enxaquecapp.app.api.models.input.UserPatchInputModel
 import com.enxaquecapp.app.enums.AuthenticationState
 import com.enxaquecapp.app.extensions.validate
 import com.enxaquecapp.app.model.User
@@ -96,19 +98,20 @@ class RegisterFragment: Fragment() {
 
     private fun submit() {
         Log.i("RegisterFragment", "submitting")
-        val birth = getBirthDate(register_birth.editText!!.text.toString())
-        val gender = getGender()
-
-        val user = User(
-            name = register_name.editText!!.text.toString(),
-            email = register_email.editText!!.text.toString(),
-            birthDate = birth,
-            gender = gender,
-            age = 0
-        )
 
         if (args.comingFromLogin) {
-            registerViewModel.register(user, register_password.editText!!.text.toString())
+            val birth = getBirthDate(register_birth.editText!!.text.toString())
+            val gender = getGender()
+
+            val user = UserInputModel(
+                name = register_name.editText!!.text.toString(),
+                email = register_email.editText!!.text.toString(),
+                password = register_password.editText!!.text.toString(),
+                birthDate = birth,
+                gender = gender
+            )
+
+            registerViewModel.register(user)
             State.authenticationState.observe(viewLifecycleOwner, Observer {state ->
                 when (state) {
                     AuthenticationState.AUTHENTICATED -> findNavController().navigate(R.id.action_register_fragment_to_nav_home)
@@ -117,13 +120,27 @@ class RegisterFragment: Fragment() {
                         Log.i("RegisterFragment", "observe else ${state}")
                     }
                 }
-
             })
         }
         else {
-            Toast.makeText(context, "TODO: update", Toast.LENGTH_LONG).show()
-            registerViewModel.update(user, register_password.editText!!.text.toString())
-            findNavController().navigate(R.id.action_register_fragment_to_nav_home)
+            val birthStr = register_birth.editText!!.text.toString().ifEmpty { null }
+            val gender = getGender()
+
+            val user = UserPatchInputModel(
+                name = register_name.editText!!.text.toString().ifEmpty { null },
+                email = register_email.editText!!.text.toString().ifEmpty { null },
+                password = register_password.editText!!.text.toString().ifEmpty { null },
+                birthDate = if (birthStr != null) {
+                    getBirthDate(birthStr)
+                } else null,
+                gender = gender.ifEmpty { null }
+            )
+
+            registerViewModel.update(user)
+
+            State.user.observe(viewLifecycleOwner, Observer {state ->
+                findNavController().navigate(R.id.action_register_fragment_to_nav_home)
+            })
         }
 
 

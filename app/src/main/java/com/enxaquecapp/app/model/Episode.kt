@@ -2,7 +2,8 @@ package com.enxaquecapp.app.model
 
 import java.util.*
 
-data class Case (
+data class Episode (
+    val id: UUID? = null,
     val startDate: Date? = null,
     val startTime: String? = null,
     val endDate: Date? = null,
@@ -11,4 +12,5 @@ data class Case (
     val location: Location? = null,
     val cause: Cause? = null,
     val relief: Relief? = null,
-    val helped: Boolean? = null )
+    val reliefWorked: Boolean? = null
+)

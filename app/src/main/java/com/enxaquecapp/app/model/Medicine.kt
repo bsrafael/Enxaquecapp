@@ -3,8 +3,12 @@ package com.enxaquecapp.app.model
 import java.util.*
 
 data class Medicine(
-    var id: Int? = null,
+    val id: UUID,
     val name: String,
+    val description: String,
     val start: Date,
-    val hourInterval: Interval
+    val hourInterval: Interval,
+    val totalDoses: Int,
+    val consumedDoses: Int,
+    val isActive: Boolean
 )

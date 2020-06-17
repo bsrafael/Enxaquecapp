@@ -15,23 +15,29 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.enxaquecapp.app.R
-import com.enxaquecapp.app.model.Case
+import com.enxaquecapp.app.api.models.input.EpisodeInputModel
+
+import com.enxaquecapp.app.model.Episode
 import com.enxaquecapp.app.model.Cause
 import com.enxaquecapp.app.model.Location
 import com.enxaquecapp.app.model.Relief
 import com.enxaquecapp.app.shared.StringUtils
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_episode.*
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import kotlin.math.roundToInt
 
 
 class EpisodeFragment : Fragment() {
     val viewModel: EpisodeViewModel by activityViewModels()
-    lateinit var case: Case
+    lateinit var case: Episode
 
 
     private lateinit var startDateBuilder: MaterialDatePicker.Builder<Long>
@@ -44,6 +50,11 @@ class EpisodeFragment : Fragment() {
     private lateinit var endDatePicker: MaterialDatePicker<Long>
 
 
+    private val locations: MutableList<Location> = mutableListOf()
+    private val causes: MutableList<Cause> = mutableListOf()
+    private val reliefs: MutableList<Relief> = mutableListOf()
+
+    private var error: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,10 +72,39 @@ class EpisodeFragment : Fragment() {
             this?.hide()
         }
 
+        viewModel.causes.observe(viewLifecycleOwner, Observer {
+            causes.clear()
+            causes.addAll(it)
+            addCausesOptions()
+
+        })
+
+        viewModel.locations.observe(viewLifecycleOwner, Observer {
+            locations.clear()
+            locations.addAll(it)
+            addLocationsOptions()
+            addReliefsOptions()
+        })
+
+        viewModel.reliefs.observe(viewLifecycleOwner, Observer {
+            reliefs.clear()
+            reliefs.addAll(it)
+        })
+
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            error = it
+            MaterialAlertDialogBuilder(context)
+                .setTitle("Ops!")
+                .setMessage(error)
+                .setPositiveButton("Ok") { dialog, which ->
+                    findNavController().popBackStack()
+                }
+            .show()
+        })
+
+
         createStepValueSeekbar(0, 10, 1)
         addButtonListeners()
-        addPlaceOptions()
-        addTriggersOptions()
 
         buildDialogs()
 
@@ -75,9 +115,6 @@ class EpisodeFragment : Fragment() {
 
         buildDateDialogs()
         buildTimeDialogs()
-
-
-
         val fields = listOf(episode_start_date, episode_start_time, episode_end_date, episode_end_time)
 
         fields.forEach { field ->
@@ -127,7 +164,6 @@ class EpisodeFragment : Fragment() {
         startDatePicker.addOnPositiveButtonClickListener {
             episode_start_date.editText!!.setText( StringUtils.dateToString(it) )
         }
-
 
         endDateBuilder = MaterialDatePicker.Builder.datePicker()
         endDateBuilder.setTitleText("Data de início")
@@ -194,18 +230,22 @@ class EpisodeFragment : Fragment() {
     }
 
     private fun buildCase() {
-        val case = Case(
-            startDate = dateOrNull( episode_start_date.editText!!.text.toString() ),
-            endDate = dateOrNull( episode_end_date.editText!!.text.toString() ),
+        val ep = Episode(
+            startDate = dateOrNull(episode_start_date.editText!!.text.toString()),
+            endDate = dateOrNull(episode_end_date.editText!!.text.toString()),
             startTime = episode_start_time.editText!!.text.toString(),
-            endTime = episode_end_time.edittText!!.text.toString(),
+            endTime = episode_end_time.editText!!.text.toString(),
             intensity = episode_intensity_seekbar.progress,
-            cause = Cause(episode_causes_triggers.editText!!.text.toString()),
-            location = Location(episode_causes_place.editText!!.text.toString()),
-            relief = Relief(episode_relief_action.editText!!.text.toString()),
-            helped = episode_relief_helped.isChecked
+            cause = causes.firstOrNull { it.description.compareTo(episode_causes_triggers.editText!!.text.toString()) == 0 },
+            location = locations.firstOrNull { it.description.compareTo(episode_causes_place.editText!!.text.toString()) == 0 },
+            relief = reliefs.firstOrNull { it.description.compareTo(episode_relief_action.editText!!.text.toString()) == 0 },
+            reliefWorked = episode_relief_helped.isChecked
         )
+
+        viewModel.create(ep)
     }
+
+
 
     private fun addButtonListeners() {
         episode_btn_cancel.setOnClickListener {
@@ -224,8 +264,10 @@ class EpisodeFragment : Fragment() {
         }
     }
 
-    private fun addPlaceOptions() {
-        val items = listOf("Material", "Design", "Components", "Android")
+    private fun addLocationsOptions() {
+        val items = mutableListOf<String>()
+        locations.forEach {  items.add(it.description) }
+
         val adapter = ArrayAdapter(
             requireContext(),
             R.layout.dropdown_list_item,
@@ -233,13 +275,26 @@ class EpisodeFragment : Fragment() {
         (episode_causes_place.editText as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
-    private fun addTriggersOptions() {
-        val items = listOf("Sample", "List", "Of", "Triggers")
+    private fun addCausesOptions() {
+        val items = mutableListOf<String>()
+        causes.forEach {  items.add(it.description) }
+
         val adapter = ArrayAdapter(
             requireContext(),
             R.layout.dropdown_list_item,
             items)
         (episode_causes_triggers.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
+    private fun addReliefsOptions() {
+        val items = mutableListOf<String>()
+        reliefs.forEach {  items.add(it.description) }
+
+        val adapter = ArrayAdapter(
+            requireContext(),
+            R.layout.dropdown_list_item,
+            items)
+        (episode_relief_action.editText as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
 

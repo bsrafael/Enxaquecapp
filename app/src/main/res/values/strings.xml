@@ -57,7 +57,7 @@
     <string name="save">Salvar</string>
     <string name="submit">Enviar</string>
     <string name="add_medicine">Adicionar medicamento</string>
-    <string name="medicine_name">Nome do medicamento</string>
+    <string name="medicine_name">Nome</string>
     <string name="discard">Descartar</string>
     <string name="interval">Intervalo</string>
     <string name="my_medicines">Meus medicamentos</string>
@@ -65,4 +65,6 @@
     <string name="episode_start_title">Início</string>
     <string name="time">Hora</string>
     <string name="date">Data</string>
+    <string name="medicine_doses">Nº doses</string>
+    <string name="medicine_description">Descrição</string>
 </resources>

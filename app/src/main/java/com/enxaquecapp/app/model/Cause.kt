@@ -1,3 +1,8 @@
 package com.enxaquecapp.app.model
 
-data class Cause(val description: String)
+import java.util.*
+
+data class Cause(
+    val id: UUID,
+    val description: String
+)

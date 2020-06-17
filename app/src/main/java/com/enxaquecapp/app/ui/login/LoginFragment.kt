@@ -48,6 +48,8 @@ class LoginFragment: Fragment() {
         with(requireActivity().fab) {
             this?.hide()
         }
+        loginViewModel.turnOnApi()
+
 
         login_submit.setOnClickListener {
             var email = login_email.editText!!.text.toString()

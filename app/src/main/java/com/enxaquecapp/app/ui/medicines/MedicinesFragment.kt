@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enxaquecapp.app.R
+import com.enxaquecapp.app.api.models.input.MedicationInputModel
 import com.enxaquecapp.app.extensions.validate
 import com.enxaquecapp.app.model.Medicine
 import com.enxaquecapp.app.shared.StringUtils
@@ -23,6 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_medicines.*
+import java.util.*
 
 
 class MedicinesFragment: Fragment() {
@@ -39,7 +41,7 @@ class MedicinesFragment: Fragment() {
 
     private var medicines: MutableList<Medicine> = mutableListOf()
 
-    private var loadedMedicine: Int? = null
+    private var loadedMedicine: UUID? = null
 
 
 
@@ -105,7 +107,6 @@ class MedicinesFragment: Fragment() {
         }
 
         medicine_start_date.setOnClickListener {
-            Snackbar.make(requireView(), "Abrindo calendário", Snackbar.LENGTH_SHORT).show()
             if (!picker.isVisible) {
                 picker.show(childFragmentManager, "Medicines Date Picker")
             }
@@ -145,25 +146,37 @@ class MedicinesFragment: Fragment() {
         return (
             medicine_field_name.editText!!.validate("Qual o nome do medicamento?") { it.isNotEmpty() }
             &&
+            medicine_field_doses.editText!!.validate("O tratamento é de quantas doses?") { it.isNotEmpty() }
+            &&
+            medicine_field_description.editText!!.validate("O medicamento faz o que?") { it.isNotEmpty() }
+            &&
             medicine_start_date.editText!!.validate("Qual o primeiro dia do tratamento?") { it.isNotEmpty() }
             &&
             medicine_interval.editText!!.validate("De quanto em quanto tempo você toma?") { it.isNotEmpty() }
         )
     }
 
+    /**
+     * TODO(Julio): fix following issue
+     * D/OkHttp: --> POST https://exaquecapp.herokuapp.com/api/medications
+     * I/MedicinesViewModel: falha ao criar o medicamento (400) Specified argument was out of the range of valid values.
+     * Parameter name: O intervalo não pode ser menor ou igual a zero
+     * **/
     private fun submitMedicine() {
         progress.visibility = View.VISIBLE
         viewModel.add(
-            Medicine(
+            MedicationInputModel(
                 name = medicine_field_name.editText!!.text.toString(),
+                description = medicine_field_description.editText!!.text.toString(),
                 start = StringUtils.strToDate(medicine_start_date.editText!!.text.toString()),
-                hourInterval = viewModel.getInterval(medicine_interval.editText!!.text.toString())
+                hourInterval = viewModel.getInterval(medicine_interval.editText!!.text.toString()).usefulValue,
+                totalDoses = medicine_field_doses.editText!!.text.toString().toInt()
             )
         )
         clearMedicineForm()
     }
 
-    private fun removeMedicine(id: Int) {
+    private fun removeMedicine(id: UUID) {
         viewModel.remove(id)
         progress.visibility = View.VISIBLE
         clearMedicineForm()
@@ -179,21 +192,19 @@ class MedicinesFragment: Fragment() {
     }
 
     private fun clearMedicineForm() {
-        medicine_field_name.editText!!.apply {
-            error = null
-            setText("")
-        }
+        val fields = listOf(
+            medicine_field_name.editText!!,
+            medicine_field_doses.editText!!,
+            medicine_field_description.editText!!,
+            medicine_start_date.editText!!,
+            medicine_interval.editText!!)
 
-        medicine_start_date.editText!!.apply {
-            error = null
-            setText("")
+        fields.forEach { field ->
+            field.apply {
+                error = null
+                setText("")
+            }
         }
-
-        medicine_interval.editText!!.apply {
-            error = null
-            setText("")
-        }
-
     }
 
     private fun buildDateDialog() {
@@ -203,13 +214,15 @@ class MedicinesFragment: Fragment() {
         picker.addOnPositiveButtonClickListener {
             medicine_start_date.editText!!.setText( StringUtils.dateToString(it) )
         }
-        Log.i("MedicinesFrag", "dialog builded")
     }
 
     private fun loadMedicine(med: Medicine) {
         medicine_field_name.editText!!.setText(med.name)
         medicine_start_date.editText!!.setText(StringUtils.dateToString(med.start))
         medicine_interval.editText!!.setText(med.hourInterval.displayValue)
+        medicine_field_description.editText!!.setText(med.description)
+        medicine_field_doses.editText!!.setText(med.totalDoses)
+
         loadedMedicine = med.id
     }
 
