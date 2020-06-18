@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.enxaquecapp.app.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_about"
@@ -21,14 +21,6 @@
         <action
             android:id="@+id/action_nav_home_to_nav_medicines"
             app:destination="@id/nav_medicines"
-
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
-        <action
-            android:id="@+id/action_nav_home_to_nav_history"
-            app:destination="@id/nav_history"
 
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
@@ -83,7 +75,6 @@
             android:name="comingFromLogin"
             app:argType="boolean" />
     </fragment>
-    <fragment android:id="@+id/nav_history" />
 
     <fragment
         android:id="@+id/episodeFragment"
@@ -124,8 +115,15 @@
     <fragment
         android:id="@+id/nav_medicines"
         android:name="com.enxaquecapp.app.ui.medicines.MedicinesFragment"
-        android:label="MedicinesFragment"
+        android:label="Meus medicamentos"
         tools:layout="@layout/fragment_medicines"
+        />
+
+    <fragment
+        android:id="@+id/nav_episodes"
+        android:name="com.enxaquecapp.app.ui.episodesList.EpisodesListFragment"
+        android:label="Meus episódios"
+        tools:layout="@layout/fragment_episodes_list"
         />
 
 </navigation>

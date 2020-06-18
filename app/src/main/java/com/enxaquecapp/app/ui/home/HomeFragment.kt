@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
-
+    private val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -36,9 +36,31 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val homeViewModel: HomeViewModel by activityViewModels<HomeViewModel>()
+        State.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+            Log.i("HomeFragment", "observe $authenticationState")
+            when (authenticationState) {
+                AuthenticationState.AUTHENTICATED -> buildHome()
+                AuthenticationState.UNAUTHENTICATED -> findNavController().navigate(R.id.login_fragment)
+            }
+        })
 
+        super.onViewCreated(view, savedInstanceState)
+    }
 
+    private fun showWelcomeMessage() {
+        if (!homeViewModel.welcomeShown) {
+            Snackbar
+                .make(
+                    requireView(),
+                    "Boas vindas!",
+                    Snackbar.LENGTH_SHORT)
+                .show()
+
+            homeViewModel.welcomeShown = true
+        }
+    }
+
+    private fun showHiddenUI() {
         with (requireActivity().toolbar ) {
             this?.visibility = View.VISIBLE
         }
@@ -49,20 +71,9 @@ class HomeFragment : Fragment() {
         with(requireActivity().fab) {
             this?.show()
         }
+    }
 
-        homeViewModel.update()
-
-        State.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
-            Log.i("HomeFragment", "observe ${authenticationState}")
-            when (authenticationState) {
-                AuthenticationState.AUTHENTICATED -> showWelcomeMessage()
-                AuthenticationState.UNAUTHENTICATED -> findNavController().navigate(R.id.login_fragment)
-            }
-        })
-
-        State.user.observe(viewLifecycleOwner, Observer {user ->
-            Log.i("HomeFragment", "user: $user")
-        })
+    private fun setupObservers() {
 
         homeViewModel.greetingText.observe(viewLifecycleOwner, Observer {
             home_greeting_text.text = it
@@ -72,16 +83,16 @@ class HomeFragment : Fragment() {
             home_cases_text.text = it
         })
 
-        super.onViewCreated(view, savedInstanceState)
+        homeViewModel.error.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(requireView(), it, Snackbar.LENGTH_LONG).show()
+        })
     }
 
-    private fun showWelcomeMessage() {
-        Snackbar
-            .make(
-                requireView(),
-                "Boas vindas!",
-                Snackbar.LENGTH_SHORT)
-            .show()
+    private fun buildHome() {
+        showHiddenUI()
+        homeViewModel.update()
+        showWelcomeMessage()
+        setupObservers()
     }
 
 }

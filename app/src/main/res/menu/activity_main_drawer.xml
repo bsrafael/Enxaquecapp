@@ -11,6 +11,7 @@
 
         <item
             android:id="@+id/nav_medicines"
+            android:icon="@drawable/ic_pill"
             android:title="@string/menu_medicines" />
 
         <item
@@ -19,14 +20,14 @@
             android:title="@string/menu_account" />
 
         <item
-            android:id="@+id/nav_history"
-            android:title="@string/menu_history"
-            android:enabled="false" />
+            android:id="@+id/nav_episodes"
+            android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+            android:title="@string/menu_history" />
 
         <item
             android:id="@+id/nav_about"
             android:title="@string/menu_about"
-            android:icon="@drawable/ic_menu_about"
+            android:icon="@drawable/ic_information"
             />
 
     </group>

@@ -11,13 +11,19 @@ import com.enxaquecapp.app.enums.AuthenticationState
 import com.enxaquecapp.app.model.Episode
 import com.enxaquecapp.app.model.User
 import com.enxaquecapp.app.shared.State
+import com.enxaquecapp.app.ui.episodesList.EpisodesListViewModel
 
 class HomeViewModel : ViewModel() {
 
     var greetingText: MutableLiveData<String> = MutableLiveData<String>()
     var casesText: MutableLiveData<String> = MutableLiveData<String>()
-    var episodes: MutableLiveData<List<Episode>> = MutableLiveData<List<Episode>>()
     lateinit var user: User
+
+    var welcomeShown: Boolean = false
+
+    var episodesViewModel: EpisodesListViewModel = EpisodesListViewModel()
+
+    var error: MutableLiveData<String> = MutableLiveData<String>()
 
     init {
 
@@ -25,32 +31,22 @@ class HomeViewModel : ViewModel() {
             user = it
             update()
         }
+
+        State.episodes.observeForever {
+            casesText.postValue(buildCasesText(it.size))
+        }
+
+        episodesViewModel.error.observeForever {
+            error.postValue(it)
+        }
     }
 
     fun update() {
         if (this::user.isInitialized) {
             greetingText.postValue(buildGreetingText())
-
-            val client = EpisodeClient()
-
-            client.get(object: ApiCallback<List<Episode>> {
-                override fun success(response: List<Episode>) {
-                    episodes.postValue(response)
-                    casesText.postValue(buildCasesText(response.size))
-                    Log.i("HomeViewModel", "lista de episódios atualizada")
-                }
-
-                override fun failure(errorCode: Int, message: String) {
-                    Log.i("HomeViewModel", "falha ao carregar os episódios: ($errorCode) $message")
-                    // TODO(rafael) fun error handling and/or message
-                }
-
-                override fun error() {
-                    Log.e("UserRepository", "falha ao carregar os episódios")
-                    // TODO(rafael) fun error handling and/or message
-                }
-            })
         }
+
+        episodesViewModel.update()
     }
 
     private fun buildGreetingText() : String {
