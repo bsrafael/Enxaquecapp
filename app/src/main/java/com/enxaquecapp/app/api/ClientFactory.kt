@@ -1,7 +1,6 @@
 package com.enxaquecapp.app.api
 
 import com.enxaquecapp.app.api.service.*
-import com.enxaquecapp.app.model.Relief
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

@@ -7,7 +7,7 @@ data class Medicine(
     val name: String,
     val description: String,
     val start: Date,
-    val hourInterval: Interval,
+    val interval: String,
     val totalDoses: Int,
     val consumedDoses: Int,
     val isActive: Boolean

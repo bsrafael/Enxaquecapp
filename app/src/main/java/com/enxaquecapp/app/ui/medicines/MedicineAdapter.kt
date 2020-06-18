@@ -36,7 +36,7 @@ class MedicineAdapter(
 
         holder.view.apply{
             item_medicine_name.text = med.name
-            item_medicine_frequency.text = med.hourInterval.displayValue
+            item_medicine_frequency.text = med.interval.toString()
             item_medicine_description.text = med.description
             item_medicine_doses.text = "Doses tomadas: ${med.consumedDoses}/${med.totalDoses}"
         }

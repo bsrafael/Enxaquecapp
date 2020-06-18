@@ -132,15 +132,7 @@ class EpisodeViewModel: ViewModel() {
         })
     }
 
-    fun create(episode: Episode) {
-        Log.i("EpisodeViewModel", "Criando: $episode")
-        // TODO(Julio): Episode to Episode Input Model
-
-        var im: EpisodeInputModel
-//        create(im)
-    }
-
-    private fun create(im: EpisodeInputModel) {
+    fun create(im: EpisodeInputModel) {
         Log.i("EpisodeViewModel", "criando episódio")
 
         val client = EpisodeClient()

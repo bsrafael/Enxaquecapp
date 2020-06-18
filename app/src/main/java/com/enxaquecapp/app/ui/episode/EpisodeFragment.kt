@@ -30,15 +30,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_episode.*
-import java.util.Calendar
-import java.util.Date
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.util.*
 import kotlin.math.roundToInt
 
 
 class EpisodeFragment : Fragment() {
     val viewModel: EpisodeViewModel by activityViewModels()
-    lateinit var case: Episode
-
 
     private lateinit var startDateBuilder: MaterialDatePicker.Builder<Long>
     private lateinit var startDatePicker: MaterialDatePicker<Long>
@@ -83,12 +84,12 @@ class EpisodeFragment : Fragment() {
             locations.clear()
             locations.addAll(it)
             addLocationsOptions()
-            addReliefsOptions()
         })
 
         viewModel.reliefs.observe(viewLifecycleOwner, Observer {
             reliefs.clear()
             reliefs.addAll(it)
+            addReliefsOptions()
         })
 
         viewModel.error.observe(viewLifecycleOwner, Observer {
@@ -102,6 +103,7 @@ class EpisodeFragment : Fragment() {
             .show()
         })
 
+        viewModel.loadOptions()
 
         createStepValueSeekbar(0, 10, 1)
         addButtonListeners()
@@ -230,19 +232,26 @@ class EpisodeFragment : Fragment() {
     }
 
     private fun buildCase() {
-        val ep = Episode(
-            startDate = dateOrNull(episode_start_date.editText!!.text.toString()),
-            endDate = dateOrNull(episode_end_date.editText!!.text.toString()),
-            startTime = episode_start_time.editText!!.text.toString(),
-            endTime = episode_end_time.editText!!.text.toString(),
+
+        val concatStart: String = "${episode_start_date.editText!!.text.toString()} ${episode_start_time.editText!!.text.toString()}"
+        val start = SimpleDateFormat("dd/MM/yyyy HH:mm").parse(concatStart)!!
+
+        val end = if (episode_end_date.editText!!.text.toString().isNotEmpty() and episode_end_time.editText!!.text.toString().isNotEmpty()) {
+            val concatEnd: String = "${episode_end_date.editText!!.text.toString()} ${episode_end_time.editText!!.text.toString()}"
+            SimpleDateFormat("dd/MM/yyyy HH:mm").parse(concatStart)
+        } else null
+
+        val im = EpisodeInputModel(
+            start = start,
+            end = end,
             intensity = episode_intensity_seekbar.progress,
-            cause = causes.firstOrNull { it.description.compareTo(episode_causes_triggers.editText!!.text.toString()) == 0 },
-            location = locations.firstOrNull { it.description.compareTo(episode_causes_place.editText!!.text.toString()) == 0 },
-            relief = reliefs.firstOrNull { it.description.compareTo(episode_relief_action.editText!!.text.toString()) == 0 },
-            reliefWorked = episode_relief_helped.isChecked
+            releafWorked = episode_relief_helped.isChecked,
+            localId = locations.firstOrNull { it.description.compareTo(episode_causes_place.editText!!.text.toString()) == 0 }?.id,
+            causeId = causes.firstOrNull { it.description.compareTo(episode_causes_triggers.editText!!.text.toString()) == 0 }?.id,
+            reliefId = reliefs.firstOrNull { it.description.compareTo(episode_relief_action.editText!!.text.toString()) == 0 }?.id
         )
 
-        viewModel.create(ep)
+        viewModel.create(im)
     }
 
 

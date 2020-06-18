@@ -4,20 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-import com.enxaquecapp.app.model.Interval
 import com.enxaquecapp.app.model.Medicine
 import java.util.*
-import java.util.logging.Handler
-import kotlin.concurrent.schedule
 
 import com.enxaquecapp.app.api.ApiCallback
 import com.enxaquecapp.app.api.client.MedicationClient
 import com.enxaquecapp.app.api.models.input.MedicationInputModel
-import com.enxaquecapp.app.enums.AuthenticationState
-import com.enxaquecapp.app.model.Episode
-import com.enxaquecapp.app.shared.State
-import java.util.*
-
+import com.enxaquecapp.app.model.Interval
+import java.time.LocalTime
 
 class MedicinesViewModel: ViewModel() {
 
@@ -49,19 +43,19 @@ class MedicinesViewModel: ViewModel() {
 
     private fun mockIntervals() {
         intervals.clear()
-        intervals.add( Interval("2/2h", "2:00:00") )
-        intervals.add( Interval("3/3h", "3:00:00") )
-        intervals.add( Interval("4/4h", "4:00:00") )
-        intervals.add( Interval("6/6h", "6:00:00") )
-        intervals.add( Interval("8/8h", "8:00:00") )
-        intervals.add( Interval("12/12h", "12:00:00") )
-        intervals.add( Interval("1x/dia", "24:00:00") )
-        intervals.add( Interval("Necessidade", "00:00:00") )
+        intervals.add(Interval("2/2h",  "2:00:00"))
+        intervals.add(Interval("3/3h", "3:00:00"))
+        intervals.add(Interval("4/4h", "4:00:00"))
+        intervals.add(Interval("6/6h", "6:00:00"))
+        intervals.add(Interval("8/8h", "8:00:00"))
+        intervals.add(Interval("12/12h", "12:00:00"))
+        intervals.add(Interval("1x/dia", "24:00:00"))
+        intervals.add(Interval("Necessidade", "00:00:00"))
     }
 
-    fun getInterval(selected: String): Interval {
+    fun getInterval(selected: String): String {
         val interval = intervals.filter { i -> i.displayValue.compareTo(selected) == 0 }
-        return interval[0]
+        return interval[0].usefulValue
     }
 
     fun add(im: MedicationInputModel) {

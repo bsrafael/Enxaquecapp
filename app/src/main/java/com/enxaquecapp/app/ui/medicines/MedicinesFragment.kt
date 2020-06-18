@@ -24,6 +24,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.fragment_medicines.*
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -124,10 +126,10 @@ class MedicinesFragment: Fragment() {
                 MaterialAlertDialogBuilder(context)
                     .setTitle("Atenção!")
                     .setMessage("Tem certeza que quer excluir esse medicamento?")
-                    .setNeutralButton("Não, cancela") { dialog, which ->
+                    .setNeutralButton("Não, cancela") { dialog, _ ->
                         dialog.dismiss()
                     }
-                    .setPositiveButton("Tenho") {dialog, which ->
+                    .setPositiveButton("Tenho") {_, _ ->
                         Log.i("MedicinesFrag", "excluindo medicamento")
                         removeMedicine(id)
                     }
@@ -168,8 +170,8 @@ class MedicinesFragment: Fragment() {
             MedicationInputModel(
                 name = medicine_field_name.editText!!.text.toString(),
                 description = medicine_field_description.editText!!.text.toString(),
-                start = StringUtils.strToDate(medicine_start_date.editText!!.text.toString()),
-                hourInterval = viewModel.getInterval(medicine_interval.editText!!.text.toString()).usefulValue,
+                start = SimpleDateFormat("dd/MM/yyyy").parse(medicine_start_date.editText!!.text.toString()),
+                interval = viewModel.getInterval(medicine_interval.editText!!.text.toString()),
                 totalDoses = medicine_field_doses.editText!!.text.toString().toInt()
             )
         )
@@ -218,8 +220,8 @@ class MedicinesFragment: Fragment() {
 
     private fun loadMedicine(med: Medicine) {
         medicine_field_name.editText!!.setText(med.name)
-        medicine_start_date.editText!!.setText(StringUtils.dateToString(med.start))
-        medicine_interval.editText!!.setText(med.hourInterval.displayValue)
+        medicine_start_date.editText!!.setText(med.start.toString())
+        medicine_interval.editText!!.setText(med.interval.toString())
         medicine_field_description.editText!!.setText(med.description)
         medicine_field_doses.editText!!.setText(med.totalDoses)
 
