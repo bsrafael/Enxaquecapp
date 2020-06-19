@@ -220,10 +220,10 @@ class MedicinesFragment: Fragment() {
 
     private fun loadMedicine(med: Medicine) {
         medicine_field_name.editText!!.setText(med.name)
-        medicine_start_date.editText!!.setText(med.start.toString())
-        medicine_interval.editText!!.setText(med.interval.toString())
+        medicine_start_date.editText!!.setText(SimpleDateFormat("dd/MM/yyyy").format(med.start))
+        medicine_interval.editText!!.setText(viewModel.getIntervalDisplayValue(med.interval))
         medicine_field_description.editText!!.setText(med.description)
-        medicine_field_doses.editText!!.setText(med.totalDoses)
+        medicine_field_doses.editText!!.setText(med.totalDoses.toString())
 
         loadedMedicine = med.id
     }

@@ -24,6 +24,8 @@ class EpisodeClient {
                     callback.success(vm)
                 }
 
+                if (response?.code() == 204) callback.noContent()
+
                 response?.errorBody()?.let {
                     val errorCode = response.code()
                     val message = it.string()

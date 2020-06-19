@@ -39,7 +39,7 @@ class EpisodesListAdapter(
 
 
         holder.view.apply{
-            item_episode_start_date.text = StringUtils.dateToString(ep.startDate!!)
+            item_episode_start_date.text = StringUtils.dateToString(ep.start)
             item_episode_duration.text = "TODO"
             item_episode_intensity.text = ep.intensity.toString()
             item_episode_intensity_icon.setImageDrawable( resources.getDrawable(ep.getIcon(), null) )

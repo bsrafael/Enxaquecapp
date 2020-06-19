@@ -29,6 +29,7 @@ class MedicinesViewModel: ViewModel() {
 
     fun update() {
         mockIntervals()
+        loadMedicines()
     }
 
     fun getIntervalArray(): Array<String> {
@@ -43,11 +44,11 @@ class MedicinesViewModel: ViewModel() {
 
     private fun mockIntervals() {
         intervals.clear()
-        intervals.add(Interval("2/2h",  "2:00:00"))
-        intervals.add(Interval("3/3h", "3:00:00"))
-        intervals.add(Interval("4/4h", "4:00:00"))
-        intervals.add(Interval("6/6h", "6:00:00"))
-        intervals.add(Interval("8/8h", "8:00:00"))
+        intervals.add(Interval("2/2h",  "02:00:00"))
+        intervals.add(Interval("3/3h", "03:00:00"))
+        intervals.add(Interval("4/4h", "04:00:00"))
+        intervals.add(Interval("6/6h", "06:00:00"))
+        intervals.add(Interval("8/8h", "08:00:00"))
         intervals.add(Interval("12/12h", "12:00:00"))
         intervals.add(Interval("1x/dia", "24:00:00"))
         intervals.add(Interval("Necessidade", "00:00:00"))
@@ -56,6 +57,39 @@ class MedicinesViewModel: ViewModel() {
     fun getInterval(selected: String): String {
         val interval = intervals.filter { i -> i.displayValue.compareTo(selected) == 0 }
         return interval[0].usefulValue
+    }
+
+    fun getIntervalDisplayValue(selected: String): String {
+        val interval = intervals.filter { i -> i.usefulValue.compareTo(selected) == 0 }
+        return interval[0].displayValue
+    }
+
+    fun loadMedicines() {
+        val client = MedicationClient()
+
+        client.get(object: ApiCallback<List<Medicine>> {
+
+            override fun success(response: List<Medicine>) {
+                meds.clear()
+                meds.addAll(response)
+                medicines.postValue(meds)
+                Log.i("MedicinesViewModel", "medicamentos carregados com sucesso")
+            }
+
+            override fun noContent() {
+                Log.i("MedicinesViewModel", "no content")
+            }
+
+            override fun failure(errorCode: Int, message: String) {
+                Log.i("MedicinesViewModel", "falha ao carregar os medicamentos ($errorCode) $message")
+                // TODO(Rafael) error handling
+            }
+
+            override fun error() {
+                Log.e("MedicinesViewModel", "falha interna ao carregar os medicamentos")
+                // TODO(Rafael) error handling
+            }
+        })
     }
 
     fun add(im: MedicationInputModel) {
@@ -67,6 +101,10 @@ class MedicinesViewModel: ViewModel() {
                 meds.add(0, response)
                 medicines.postValue(meds)
                 Log.i("MedicinesViewModel", "medicamento criado com sucesso")
+            }
+
+            override fun noContent() {
+                Log.i("MedicinesViewModel", "no content")
             }
 
             override fun failure(errorCode: Int, message: String) {
@@ -81,6 +119,7 @@ class MedicinesViewModel: ViewModel() {
         })
     }
 
+    // TODO(Rafael) usar esse método no submit do medicamento quando estiver alterando um medicamento existente
     fun update(id: UUID, im: MedicationInputModel) {
         val client = MedicationClient()
 
@@ -91,6 +130,10 @@ class MedicinesViewModel: ViewModel() {
                 meds.add(0, response)
                 medicines.postValue(meds)
                 Log.i("MedicinesViewModel", "medicamento atualizado com sucesso")
+            }
+
+            override fun noContent() {
+                Log.i("MedicinesViewModel", "no content")
             }
 
             override fun failure(errorCode: Int, message: String) {
@@ -116,6 +159,10 @@ class MedicinesViewModel: ViewModel() {
                 Log.i("MedicinesViewModel", "medicamento removido com sucesso")
             }
 
+            override fun noContent() {
+                Log.i("MedicinesViewModel", "no content")
+            }
+
             override fun failure(errorCode: Int, message: String) {
                 Log.i("MedicinesViewModel", "falha ao remover o medicamento ($errorCode) $message")
                 // TODO(Rafael) error handling
@@ -138,6 +185,10 @@ class MedicinesViewModel: ViewModel() {
                 meds.add(0, response)
                 medicines.postValue(meds)
                 Log.i("MedicinesViewModel", "medicamento atualizado com sucesso")
+            }
+
+            override fun noContent() {
+                Log.i("MedicinesViewModel", "no content")
             }
 
             override fun failure(errorCode: Int, message: String) {

@@ -20,30 +20,30 @@ class EpisodesListViewModel: ViewModel() {
     fun update() {
         val client = EpisodeClient()
 
-        error.postValue("TODO: Remover mock de episódios")
-        mockEpisodes()
+        client.get(object: ApiCallback<List<Episode>> {
+            override fun success(response: List<Episode>) {
+                episodes.postValue(response)
+                State.episodes.postValue(response)
+            }
 
-        // TODO(Julio): D/OkHttp: <-- 204 No Content https://exaquecapp.herokuapp.com/api/episodes não chama nenhum callback
-//        client.get(object: ApiCallback<List<Episode>> {
-//            override fun success(response: List<Episode>) {
-//                episodes.postValue(response)
-//                State.episodes.postValue(response)
-//            }
-//
-//            override fun failure(errorCode: Int, message: String) {
-//                Log.i("HomeViewModel", "falha ao carregar os episódios: ($errorCode) $message")
-//                error.postValue("Falha ao carregar os episódios\n$message")
-//                mockEpisodes()
-//            }
-//
-//            override fun error() {
-//                Log.e("UserRepository", "falha interna ao carregar os episódios")
-//                error.postValue("Falha interna ao carregar os episódios")
-//                mockEpisodes()
-//            }
-//        })
+            override fun noContent() {
+                error.postValue("Nenhum episódio cadastrado")
+                // TODO(Rafael) usar essa resposta direito
+            }
+
+            override fun failure(errorCode: Int, message: String) {
+                Log.i("HomeViewModel", "falha ao carregar os episódios: ($errorCode) $message")
+                error.postValue("Falha ao carregar os episódios\n$message")
+            }
+
+            override fun error() {
+                Log.e("UserRepository", "falha interna ao carregar os episódios")
+                error.postValue("Falha interna ao carregar os episódios")
+            }
+        })
     }
 
+    /*
     private fun mockEpisodes() {
         val eps = listOf(
             Episode(
@@ -88,4 +88,5 @@ class EpisodesListViewModel: ViewModel() {
         State.episodes.postValue(eps)
 
     }
+    */
 }

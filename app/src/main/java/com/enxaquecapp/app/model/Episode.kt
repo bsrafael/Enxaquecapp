@@ -11,7 +11,7 @@ data class Episode (
     val location: Location? = null,
     val cause: Cause? = null,
     val relief: Relief? = null,
-    val releafWorked: Boolean = null
+    val releafWorked: Boolean // TODO(Julio) fix typo on backend
 ) {
 
     fun getIcon(): Int {
