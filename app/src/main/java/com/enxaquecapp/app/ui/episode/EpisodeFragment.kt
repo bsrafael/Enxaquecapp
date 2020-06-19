@@ -92,15 +92,24 @@ class EpisodeFragment : Fragment() {
             addReliefsOptions()
         })
 
+        viewModel.episode.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                findNavController().popBackStack()
+                viewModel.episode.postValue(null)
+            }
+        })
+
         viewModel.error.observe(viewLifecycleOwner, Observer {
-            error = it
-            MaterialAlertDialogBuilder(context)
-                .setTitle("Ops!")
-                .setMessage(error)
-                .setPositiveButton("Ok") { dialog, which ->
-                    findNavController().popBackStack()
-                }
-            .show()
+            if (it.isNotEmpty()) {
+                error = it
+                MaterialAlertDialogBuilder(context)
+                    .setTitle("Ops!")
+                    .setMessage(error)
+                    .setPositiveButton("Ok") { dialog, which ->
+                        viewModel.error.postValue("")
+                    }
+                    .show()
+            }
         })
 
         viewModel.loadOptions()
@@ -212,8 +221,8 @@ class EpisodeFragment : Fragment() {
                 progress: Int,
                 fromUser: Boolean
             ) {
-                val value =
-                    (progress * (max - min) / 10.toFloat()).roundToInt()
+                episode_intensity_icon.setImageDrawable( resources.getDrawable(Episode.selectIcon(progress), null) )
+                episode_intensity_title.text = "Intensidade: ${progress}"
             }
         })
     }
@@ -238,7 +247,7 @@ class EpisodeFragment : Fragment() {
 
         val end = if (episode_end_date.editText!!.text.toString().isNotEmpty() and episode_end_time.editText!!.text.toString().isNotEmpty()) {
             val concatEnd: String = "${episode_end_date.editText!!.text.toString()} ${episode_end_time.editText!!.text.toString()}"
-            SimpleDateFormat("dd/MM/yyyy HH:mm").parse(concatStart)
+            SimpleDateFormat("dd/MM/yyyy HH:mm").parse(concatEnd)
         } else null
 
         val im = EpisodeInputModel(
@@ -267,9 +276,7 @@ class EpisodeFragment : Fragment() {
         }
 
         episode_btn_confirm.setOnClickListener {
-            findNavController().popBackStack()
             buildCase()
-            Toast.makeText(context, "TODO: New episode", Toast.LENGTH_LONG).show()
         }
     }
 

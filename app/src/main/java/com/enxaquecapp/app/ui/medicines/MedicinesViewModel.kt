@@ -22,6 +22,8 @@ class MedicinesViewModel: ViewModel() {
 
     var intervals: MutableList<Interval> = mutableListOf()
 
+    var error: MutableLiveData<String> = MutableLiveData<String>()
+
 
     init {
         update()
@@ -50,8 +52,7 @@ class MedicinesViewModel: ViewModel() {
         intervals.add(Interval("6/6h", "06:00:00"))
         intervals.add(Interval("8/8h", "08:00:00"))
         intervals.add(Interval("12/12h", "12:00:00"))
-        intervals.add(Interval("1x/dia", "24:00:00"))
-        intervals.add(Interval("Necessidade", "00:00:00"))
+        intervals.add(Interval("1x/dia", "24.00:00:00"))
     }
 
     fun getInterval(selected: String): String {
@@ -60,8 +61,7 @@ class MedicinesViewModel: ViewModel() {
     }
 
     fun getIntervalDisplayValue(selected: String): String {
-        val interval = intervals.filter { i -> i.usefulValue.compareTo(selected) == 0 }
-        return interval[0].displayValue
+        return intervals.filter { i -> i.usefulValue.compareTo(selected) == 0 }[0].displayValue
     }
 
     fun loadMedicines() {
@@ -78,28 +78,31 @@ class MedicinesViewModel: ViewModel() {
 
             override fun noContent() {
                 Log.i("MedicinesViewModel", "no content")
+                meds.clear()
+                medicines.postValue(meds)
             }
 
             override fun failure(errorCode: Int, message: String) {
                 Log.i("MedicinesViewModel", "falha ao carregar os medicamentos ($errorCode) $message")
-                // TODO(Rafael) error handling
+                error.postValue("Ops!\n$message")
             }
 
             override fun error() {
                 Log.e("MedicinesViewModel", "falha interna ao carregar os medicamentos")
-                // TODO(Rafael) error handling
+                error.postValue("Ops!\nFalha interna ao carregar os medicamentos")
             }
         })
     }
 
     fun add(im: MedicationInputModel) {
+
+
         val client = MedicationClient()
 
         client.create(im, object: ApiCallback<Medicine> {
 
             override fun success(response: Medicine) {
-                meds.add(0, response)
-                medicines.postValue(meds)
+                loadMedicines()
                 Log.i("MedicinesViewModel", "medicamento criado com sucesso")
             }
 
@@ -109,12 +112,12 @@ class MedicinesViewModel: ViewModel() {
 
             override fun failure(errorCode: Int, message: String) {
                 Log.i("MedicinesViewModel", "falha ao criar o medicamento ($errorCode) $message")
-                // TODO(Rafael) error handling
+                error.postValue("Ops! Falha ao criar o medicamento\n$message")
             }
 
             override fun error() {
                 Log.e("MedicinesViewModel", "falha interna na criação do medicamento")
-                // TODO(Rafael) error handling
+                error.postValue("Ops!\nFalha interna ao criar o medicamento")
             }
         })
     }
@@ -132,18 +135,14 @@ class MedicinesViewModel: ViewModel() {
                 Log.i("MedicinesViewModel", "medicamento atualizado com sucesso")
             }
 
-            override fun noContent() {
-                Log.i("MedicinesViewModel", "no content")
-            }
-
             override fun failure(errorCode: Int, message: String) {
                 Log.i("MedicinesViewModel", "falha ao atualizar o medicamento ($errorCode) $message")
-                // TODO(Rafael) error handling
+                error.postValue("Ops! Falha ao atualizar o medicamento\n$message")
             }
 
             override fun error() {
                 Log.e("MedicinesViewModel", "falha interna na atualização do medicamento")
-                // TODO(Rafael) error handling
+                error.postValue("Ops!\nFalha interna ao atualizar o medicamento")
             }
         })
     }
@@ -159,22 +158,19 @@ class MedicinesViewModel: ViewModel() {
                 Log.i("MedicinesViewModel", "medicamento removido com sucesso")
             }
 
-            override fun noContent() {
-                Log.i("MedicinesViewModel", "no content")
-            }
-
             override fun failure(errorCode: Int, message: String) {
                 Log.i("MedicinesViewModel", "falha ao remover o medicamento ($errorCode) $message")
-                // TODO(Rafael) error handling
+                error.postValue("Ops! Falha ao remover o medicamento\n$message")
             }
 
             override fun error() {
                 Log.e("MedicinesViewModel", "falha interna na remoção do medicamento")
-                // TODO(Rafael) error handling
+                error.postValue("Ops! Falha interna ao remover o medicamento")
             }
         })
     }
 
+    //TODO(Rafael): criar um "finalizar" na UI e chamar esse método
     fun finish(id: UUID) {
         val client = MedicationClient()
 
@@ -187,18 +183,14 @@ class MedicinesViewModel: ViewModel() {
                 Log.i("MedicinesViewModel", "medicamento atualizado com sucesso")
             }
 
-            override fun noContent() {
-                Log.i("MedicinesViewModel", "no content")
-            }
-
             override fun failure(errorCode: Int, message: String) {
                 Log.i("MedicinesViewModel", "falha ao atualizar o medicamento ($errorCode) $message")
-                // TODO(Rafael) error handling
+                error.postValue("Ops! Falha ao finalizar o medicamento\n$message")
             }
 
             override fun error() {
                 Log.e("MedicinesViewModel", "falha interna na atualização do medicamento")
-                // TODO(Rafael) error handling
+                error.postValue("Ops! Falha interna ao finalizar o medicamento")
             }
         })
     }

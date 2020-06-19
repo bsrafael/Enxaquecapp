@@ -170,12 +170,12 @@ class EpisodeViewModel: ViewModel() {
 
             override fun failure(errorCode: Int, message: String) {
                 Log.i("EpisodeViewModel", "falha ao atualizar o episódio ($errorCode) $message")
-                // TODO(Rafael): error handling
+                error.postValue("Ops! Falha ao atualizar o episódio\n$message")
             }
 
             override fun error() {
                 Log.e("UserRepository", "falha interna na criação do episódio")
-                // TODO(Rafael): error handling
+                error.postValue("Ops! Falha interna ao atualizar o episódio")
             }
         })
     }
@@ -194,12 +194,12 @@ class EpisodeViewModel: ViewModel() {
 
             override fun failure(errorCode: Int, message: String) {
                 Log.i("EpisodeViewModel", "falha ao remover o episódio ($errorCode) $message")
-                // TODO(Rafael): error handling
+                error.postValue("Ops! Falha ao remover o episódio \n$message")
             }
 
             override fun error() {
                 Log.e("UserRepository", "falha interna na remoção do episódio")
-                // TODO(Rafael): error handling
+                error.postValue("Ops! Falha interna ao remover o episódio")
             }
         })
     }

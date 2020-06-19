@@ -28,7 +28,7 @@ class EpisodesListViewModel: ViewModel() {
 
             override fun noContent() {
                 error.postValue("Nenhum episódio cadastrado")
-                // TODO(Rafael) usar essa resposta direito
+                episodes.postValue(emptyList())
             }
 
             override fun failure(errorCode: Int, message: String) {

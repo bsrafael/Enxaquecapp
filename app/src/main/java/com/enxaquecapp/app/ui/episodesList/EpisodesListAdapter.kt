@@ -28,7 +28,7 @@ class EpisodesListAdapter(
                                     viewType: Int): EpisodesListAdapter.EpisodeItemViewHolder {
 
         val medItem = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_medicine, parent, false)
+            .inflate(R.layout.item_episode, parent, false)
 
         return EpisodeItemViewHolder(medItem)
     }

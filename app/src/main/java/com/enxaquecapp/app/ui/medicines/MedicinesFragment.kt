@@ -47,6 +47,8 @@ class MedicinesFragment: Fragment() {
 
 
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -166,15 +168,20 @@ class MedicinesFragment: Fragment() {
      * **/
     private fun submitMedicine() {
         progress.visibility = View.VISIBLE
-        viewModel.add(
-            MedicationInputModel(
-                name = medicine_field_name.editText!!.text.toString(),
-                description = medicine_field_description.editText!!.text.toString(),
-                start = SimpleDateFormat("dd/MM/yyyy").parse(medicine_start_date.editText!!.text.toString()),
-                interval = viewModel.getInterval(medicine_interval.editText!!.text.toString()),
-                totalDoses = medicine_field_doses.editText!!.text.toString().toInt()
-            )
+        val im = MedicationInputModel(
+            name = medicine_field_name.editText!!.text.toString(),
+            description = medicine_field_description.editText!!.text.toString(),
+            start = SimpleDateFormat("dd/MM/yyyy").parse(medicine_start_date.editText!!.text.toString()),
+            interval = viewModel.getInterval(medicine_interval.editText!!.text.toString()),
+            totalDoses = medicine_field_doses.editText!!.text.toString().toInt()
         )
+        if (loadedMedicine != null) {
+            viewModel.update(loadedMedicine!!, im)
+            loadedMedicine = null
+        } else {
+            viewModel.add( im )
+        }
+
         clearMedicineForm()
     }
 
@@ -203,7 +210,7 @@ class MedicinesFragment: Fragment() {
 
         fields.forEach { field ->
             field.apply {
-                error = null
+                this.error = null
                 setText("")
             }
         }
