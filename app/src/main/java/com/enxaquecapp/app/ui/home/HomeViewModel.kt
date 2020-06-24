@@ -15,30 +15,24 @@ import com.enxaquecapp.app.ui.episodesList.EpisodesListViewModel
 
 class HomeViewModel : ViewModel() {
 
-    var greetingText: MutableLiveData<String> = MutableLiveData<String>()
+    var greetingText: MutableLiveData<String> = MutableLiveData<String>("Boas vindas!")
     var casesText: MutableLiveData<String> = MutableLiveData<String>()
+    var meanIntensity: MutableLiveData<Float> = MutableLiveData<Float>()
+
     lateinit var user: User
 
     var welcomeShown: Boolean = false
 
-    var episodesViewModel: EpisodesListViewModel = EpisodesListViewModel()
+    private var episodesViewModel: EpisodesListViewModel = EpisodesListViewModel()
 
     var error: MutableLiveData<String> = MutableLiveData<String>()
 
     init {
 
-        State.user.observeForever {
-            user = it
-            update()
-        }
 
-        State.episodes.observeForever {
-            casesText.postValue(buildCasesText(it.size))
-        }
+        setupObservers()
 
-        episodesViewModel.error.observeForever {
-            error.postValue(it)
-        }
+
     }
 
     fun update() {
@@ -56,4 +50,41 @@ class HomeViewModel : ViewModel() {
     private fun buildCasesText(cases: Int) : String {
         return "Você teve $cases nos últimos dias."
     }
+
+    private fun setupObservers() {
+        State.user.observeForever {
+            user = it
+            update()
+        }
+
+        State.episodes.observeForever {
+            var txt = ""
+            txt = if (it.isNotEmpty()) {
+                var mean = getMeanIntensity(it)
+                meanIntensity.postValue(mean)
+                "Você tem ${it.size} episódios registrados.\nSeus episódios têm uma intensidade média de $mean"
+            } else {
+                "Você ainda não adicionou nenhum episódio!"
+            }
+            casesText.postValue(txt)
+        }
+
+        episodesViewModel.error.observeForever {
+            error.postValue(it)
+        }
+    }
+
+    private fun getMeanIntensity(eps: List<Episode>): Float {
+        var counter: Int = 0
+
+        eps.forEach {ep ->
+            counter += ep.intensity
+        }
+
+        //TODO(Julio): Remove mock after fixing API issue (intensity returns 0)
+//        return counter.toFloat() / eps.size.toFloat()
+        return 2.59F
+
+    }
+
 }

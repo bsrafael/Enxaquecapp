@@ -3,7 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Enxaquecapp</string>
-    <string name="nav_header_subtitle">meajuda@enxaquecapp.com</string>
+    <string name="nav_header_subtitle">Seu companheiro de enxaqueca</string>
     <string name="nav_header_desc">Cabeçalho do menu</string>
     <string name="action_settings">Settings</string>
 
@@ -12,9 +12,6 @@
     <string name="menu_medicines">Medicamentos</string>
     <string name="menu_account">Minha conta</string>
     <string name="menu_history">Histórico</string>
-
-
-
 
     <string name="email">E-mail</string>
     <string name="content_description_person">Ícone de uma pessoa</string>
@@ -69,4 +66,11 @@
     <string name="medicine_doses">Nº doses</string>
     <string name="medicine_description">Descrição</string>
     <string name="my_episodes">Meus episódios</string>
+    <string name="home_instructions_title">Instruções de uso</string>
+    <string name="home_instructions">
+        - Use o botão verde para adicionar um episódio\n
+        - Use o menu para navegar pelo aplicativo\n
+        - Mantenha seus episódios atualizados\n
+        - Adicione seus medicamentos ao app
+    </string>
 </resources>
