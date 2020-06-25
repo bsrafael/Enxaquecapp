@@ -22,56 +22,6 @@ class EpisodeViewModel: ViewModel() {
     var episode: MutableLiveData<Episode> = MutableLiveData<Episode>()
     var error: MutableLiveData<String> = MutableLiveData<String>()
 
-    private fun mockCauses() {
-        val c = listOf<Cause>(
-            Cause(UUID.randomUUID(), "Stress"),
-            Cause(UUID.randomUUID(), "Falta de sono"),
-            Cause(UUID.randomUUID(), "Ansiedade"),
-            Cause(UUID.randomUUID(), "Falta de água"),
-            Cause(UUID.randomUUID(), "Café"),
-            Cause(UUID.randomUUID(), "Bebida"),
-            Cause(UUID.randomUUID(), "Barulho"),
-            Cause(UUID.randomUUID(), "Luz"),
-            Cause(UUID.randomUUID(), "Som"),
-            Cause(UUID.randomUUID(), "Cheiro"),
-            Cause(UUID.randomUUID(), "Menstruação"),
-            Cause(UUID.randomUUID(), "Menopausa"),
-            Cause(UUID.randomUUID(), "Mudança climática"),
-            Cause(UUID.randomUUID(), "Viagem")
-        )
-
-        causes.postValue(c)
-    }
-
-    private fun mockLocations() {
-        val l = listOf<Location>(
-            Location(UUID.randomUUID(), "Em casa"),
-            Location(UUID.randomUUID(), "Na rua"),
-            Location(UUID.randomUUID(), "No trabalho"),
-            Location(UUID.randomUUID(), "Em uma loja"),
-            Location(UUID.randomUUID(), "Em um restaurante"),
-            Location(UUID.randomUUID(), "Em um bar"),
-            Location(UUID.randomUUID(), "Em um carro"),
-            Location(UUID.randomUUID(), "Em um ônibus"),
-            Location(UUID.randomUUID(), "Em um avião")
-        )
-        locations.postValue(l)
-    }
-
-
-    private fun mockReliefs() {
-        val l = listOf<Relief>(
-            Relief(UUID.randomUUID(), "Nada"),
-            Relief(UUID.randomUUID(), "Dormi"),
-            Relief(UUID.randomUUID(), "Bebi água"),
-            Relief(UUID.randomUUID(), "Fiz um exercício"),
-            Relief(UUID.randomUUID(), "Tomei um remédio"),
-            Relief(UUID.randomUUID(), "Fiquei em um lugar escuro e quieto"),
-            Relief(UUID.randomUUID(), "Pedi demissão")
-        )
-        reliefs.postValue(l)
-    }
-
     fun loadOptions() {
         Log.i("EpisodeViewModel", "carregando opções")
 

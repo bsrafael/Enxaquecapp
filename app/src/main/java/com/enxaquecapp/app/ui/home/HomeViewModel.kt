@@ -81,10 +81,7 @@ class HomeViewModel : ViewModel() {
             counter += ep.intensity
         }
 
-        //TODO(Julio): Remove mock after fixing API issue (intensity returns 0)
-//        return counter.toFloat() / eps.size.toFloat()
-        return 2.59F
-
+        return counter.toFloat() / eps.size.toFloat()
     }
 
 }
