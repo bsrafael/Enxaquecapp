@@ -2,6 +2,8 @@ package com.enxaquecapp.app.api.service
 
 import com.enxaquecapp.app.api.models.input.MedicationInputModel
 import com.enxaquecapp.app.model.Medicine
+import okhttp3.Response
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.util.*

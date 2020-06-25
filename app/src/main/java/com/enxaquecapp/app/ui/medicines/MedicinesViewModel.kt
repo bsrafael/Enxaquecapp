@@ -11,7 +11,6 @@ import com.enxaquecapp.app.api.ApiCallback
 import com.enxaquecapp.app.api.client.MedicationClient
 import com.enxaquecapp.app.api.models.input.MedicationInputModel
 import com.enxaquecapp.app.model.Interval
-import java.time.LocalTime
 
 class MedicinesViewModel: ViewModel() {
 
@@ -52,7 +51,7 @@ class MedicinesViewModel: ViewModel() {
         intervals.add(Interval("6/6h", "06:00:00"))
         intervals.add(Interval("8/8h", "08:00:00"))
         intervals.add(Interval("12/12h", "12:00:00"))
-        intervals.add(Interval("1x/dia", "24.00:00:00"))
+        intervals.add(Interval("1x/dia", "24:00:00"))
     }
 
     fun getInterval(selected: String): String {
@@ -150,24 +149,11 @@ class MedicinesViewModel: ViewModel() {
     fun remove(id: UUID) {
         val client = MedicationClient()
 
-        client.delete(id, object: ApiCallback<Void> {
+        client.delete(id)
 
-            override fun success(response: Void) {
-                meds.filter { med -> med.id != id }
-                medicines.postValue(meds)
-                Log.i("MedicinesViewModel", "medicamento removido com sucesso")
-            }
-
-            override fun failure(errorCode: Int, message: String) {
-                Log.i("MedicinesViewModel", "falha ao remover o medicamento ($errorCode) $message")
-                error.postValue("Ops! Falha ao remover o medicamento\n$message")
-            }
-
-            override fun error() {
-                Log.e("MedicinesViewModel", "falha interna na remoção do medicamento")
-                error.postValue("Ops! Falha interna ao remover o medicamento")
-            }
-        })
+        meds.removeAll { med -> med.id == id }
+        medicines.postValue(meds)
+        Log.i("MedicinesViewModel", "medicamento removido com sucesso")
     }
 
     //TODO(Rafael): criar um "finalizar" na UI e chamar esse método
