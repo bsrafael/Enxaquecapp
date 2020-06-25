@@ -88,26 +88,15 @@ class EpisodeClient {
         })
     }
 
-    fun delete(id: UUID, callback: ApiCallback<Void>) {
+    fun delete(id: UUID) {
         val call = ClientFactory(State.token.value).episodeService().delete(id)
-        call.enqueue(object : Callback<Void?> {
+        call.enqueue(object : Callback<Void> {
 
-            override fun onResponse(call: Call<Void?>?, response: Response<Void?>?) {
-                response?.body()?.let {
-                    val vm: Void = it // TODO(Julio) no idea if this is gonna work
-                    callback.success(vm)
-                }
-
-                response?.errorBody()?.let {
-                    val errorCode = response.code()
-                    val message = it.string()
-                    callback.failure(errorCode, message)
-                }
+            override fun onResponse(call: Call<Void>, response: Response<Void?>) {
             }
 
-            override fun onFailure(call: Call<Void?>?, t: Throwable?) {
+            override fun onFailure(call: Call<Void>, t: Throwable?) {
                 Log.e("onFailure error", t?.message)
-                callback.error()
             }
         })
     }

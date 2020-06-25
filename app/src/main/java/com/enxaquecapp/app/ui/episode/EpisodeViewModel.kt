@@ -185,22 +185,9 @@ class EpisodeViewModel: ViewModel() {
 
         val client = EpisodeClient()
 
-        client.delete(id, object: ApiCallback<Void> {
+        client.delete(id)
 
-            override fun success(response: Void) {
-                episode.postValue(null)
-                Log.i("EpisodeViewModel", "episódio removido com sucesso")
-            }
-
-            override fun failure(errorCode: Int, message: String) {
-                Log.i("EpisodeViewModel", "falha ao remover o episódio ($errorCode) $message")
-                error.postValue("Ops! Falha ao remover o episódio \n$message")
-            }
-
-            override fun error() {
-                Log.e("UserRepository", "falha interna na remoção do episódio")
-                error.postValue("Ops! Falha interna ao remover o episódio")
-            }
-        })
+        episode.postValue(null)
+        Log.i("EpisodeViewModel", "episódio removido com sucesso")
     }
 }
