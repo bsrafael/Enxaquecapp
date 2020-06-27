@@ -3,6 +3,7 @@ package com.enxaquecapp.app.extensions
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.TextView
 
 
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
@@ -22,3 +23,5 @@ fun EditText.validate(message: String, validator: (String) -> Boolean): Boolean 
     this.error = if (validator(this.text.toString())) null else message
     return this.error == null
 }
+
+

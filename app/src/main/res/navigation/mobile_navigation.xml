@@ -80,7 +80,13 @@
         android:id="@+id/episodeFragment"
         android:name="com.enxaquecapp.app.ui.episode.EpisodeFragment"
         android:label="Novo episódio"
-        tools:layout="@layout/fragment_episode"/>
+        tools:layout="@layout/fragment_episode">
+        <argument
+            android:name="episode"
+            app:argType="com.enxaquecapp.app.model.Episode"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 
     <action
@@ -124,6 +130,10 @@
         android:name="com.enxaquecapp.app.ui.episodesList.EpisodesListFragment"
         android:label="Meus episódios"
         tools:layout="@layout/fragment_episodes_list"
-        />
+        >
+        <action
+            android:id="@+id/action_nav_episodes_to_episodeFragment"
+            app:destination="@id/episodeFragment" />
+    </fragment>
 
 </navigation>

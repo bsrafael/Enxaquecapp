@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.model.Episode
-import com.enxaquecapp.app.model.Medicine
 import com.enxaquecapp.app.shared.StringUtils
 import kotlinx.android.synthetic.main.item_episode.view.*
-import kotlinx.android.synthetic.main.item_medicine.view.*
+
 
 class EpisodesListAdapter(
     private val dataset: List<Episode>,
@@ -37,10 +36,9 @@ class EpisodesListAdapter(
         val ep = dataset[position]
         Log.i("Adapter", "bind: $ep")
 
-
         holder.view.apply{
             item_episode_start_date.text = StringUtils.dateToString(ep.start)
-            item_episode_duration.text = "TODO"
+            item_episode_duration.text = ep.getDuration()
             item_episode_intensity.text = ep.intensity.toString()
             item_episode_intensity_icon.setImageDrawable( resources.getDrawable(ep.getIcon(), null) )
         }
@@ -48,8 +46,6 @@ class EpisodesListAdapter(
         holder.view.setOnClickListener {
             callback.onClick(position)
         }
-
-
     }
 
     override fun getItemCount() = dataset.size

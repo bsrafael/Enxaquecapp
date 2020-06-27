@@ -397,18 +397,6 @@
             android:text="@string/cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/episode_btn_remindme"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/episode_btn_remindme"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="44dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/remindme"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/episode_btn_cancel"
             app:layout_constraintRight_toLeftOf="@id/episode_btn_confirm"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -418,7 +406,7 @@
             android:layout_height="44dp"
             android:text="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/episode_btn_remindme"
+            app:layout_constraintLeft_toRightOf="@id/episode_btn_cancel"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

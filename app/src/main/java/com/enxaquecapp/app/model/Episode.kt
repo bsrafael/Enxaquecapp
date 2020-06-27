@@ -1,6 +1,7 @@
 package com.enxaquecapp.app.model
 
 import com.enxaquecapp.app.R
+import java.io.Serializable
 import java.util.*
 
 data class Episode (
@@ -12,10 +13,26 @@ data class Episode (
     val cause: Cause? = null,
     val relief: Relief? = null,
     val releafWorked: Boolean // TODO(Julio) fix typo on backend
-) {
+): Serializable {
 
     fun getIcon(): Int {
         return selectIcon(intensity)
+    }
+
+    fun getDuration(): String {
+        var duration = "?"
+        if (end != null) {
+            val diff = end!!.time - start.time
+            val diffSeconds = diff / 1000 % 60
+            val diffMinutes = diff / (60 * 1000) % 60
+            val diffHours = diff / (60 * 60 * 1000)
+            duration = ""
+            if (diffHours > 0) duration += "${diffHours}h "
+            if (diffMinutes > 0) duration += "${diffMinutes}min "
+            if (diffSeconds > 0) duration += "${diffSeconds}s "
+        }
+
+        return duration
     }
 
     companion object {

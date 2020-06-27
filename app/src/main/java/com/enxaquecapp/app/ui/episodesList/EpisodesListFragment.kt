@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.model.Episode
+import com.enxaquecapp.app.ui.episode.EpisodeFragmentDirections
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_episodes_list.*
@@ -47,7 +49,6 @@ class EpisodesListFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-//        addListeners()
 
         viewModel.episodes.observe(viewLifecycleOwner, Observer {
             episodes.clear()
@@ -61,7 +62,8 @@ class EpisodesListFragment: Fragment() {
         viewManager = LinearLayoutManager(context)
         viewAdapter = EpisodesListAdapter(episodes, object : EpisodesListAdapter.OnEpClick {
             override fun onClick(index: Int) {
-
+                val action = EpisodeFragmentDirections.actionGlobalEpisodeFragment(episodes[index])
+                findNavController().navigate(action)
             }
         })
 
@@ -75,19 +77,4 @@ class EpisodesListFragment: Fragment() {
         }
 
     }
-
-    private fun addListeners() {
-//
-//        MaterialAlertDialogBuilder(context)
-//            .setTitle("Atenção!")
-//            .setMessage("Tem certeza que quer excluir esse medicamento?")
-//            .setNeutralButton("Não, cancela") { dialog, which ->
-//                dialog.dismiss()
-//            }
-//            .setPositiveButton("Tenho") {dialog, which ->
-//                Log.i("MedicinesFrag", "excluindo medicamento")
-//            }
-//            .show()
-    }
-
 }

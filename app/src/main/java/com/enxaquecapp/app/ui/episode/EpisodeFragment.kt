@@ -17,8 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.enxaquecapp.app.R
 import com.enxaquecapp.app.api.models.input.EpisodeInputModel
+import com.enxaquecapp.app.api.models.input.EpisodePatchInputModel
 
 import com.enxaquecapp.app.model.Episode
 import com.enxaquecapp.app.model.Cause
@@ -39,7 +41,7 @@ import kotlin.math.roundToInt
 
 
 class EpisodeFragment : Fragment() {
-    val viewModel: EpisodeViewModel by activityViewModels()
+    private val viewModel: EpisodeViewModel by activityViewModels()
 
     private lateinit var startDateBuilder: MaterialDatePicker.Builder<Long>
     private lateinit var startDatePicker: MaterialDatePicker<Long>
@@ -57,6 +59,10 @@ class EpisodeFragment : Fragment() {
 
     private var error: String = ""
 
+    private var epId: UUID? = null
+
+    val args: EpisodeFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,6 +78,21 @@ class EpisodeFragment : Fragment() {
         with(requireActivity().fab) {
             this?.hide()
         }
+        setupObservers()
+        viewModel.loadOptions()
+        createStepValueSeekbar(0, 10, 1)
+        addButtonListeners()
+        buildDialogs()
+
+        args.episode?.let {
+            setupExistingEpisode(it)
+        }
+
+
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun setupObservers() {
 
         viewModel.causes.observe(viewLifecycleOwner, Observer {
             causes.clear()
@@ -111,17 +132,7 @@ class EpisodeFragment : Fragment() {
                     .show()
             }
         })
-
-        viewModel.loadOptions()
-
-        createStepValueSeekbar(0, 10, 1)
-        addButtonListeners()
-
-        buildDialogs()
-
-        super.onViewCreated(view, savedInstanceState)
     }
-
     private fun buildDialogs() {
 
         buildDateDialogs()
@@ -232,13 +243,6 @@ class EpisodeFragment : Fragment() {
     }
 
 
-    private fun dateOrNull(field: String): Date?{
-        return if (field.isNotEmpty()) {
-            StringUtils.strToDate(field)
-        } else {
-            null
-        }
-    }
 
     private fun buildCase() {
 
@@ -250,17 +254,26 @@ class EpisodeFragment : Fragment() {
             SimpleDateFormat("dd/MM/yyyy HH:mm").parse(concatEnd)
         } else null
 
-        val im = EpisodeInputModel(
-            start = start,
-            end = end,
-            intensity = episode_intensity_seekbar.progress,
-            releafWorked = episode_relief_helped.isChecked,
-            localId = locations.firstOrNull { it.description.compareTo(episode_causes_place.editText!!.text.toString()) == 0 }?.id,
-            causeId = causes.firstOrNull { it.description.compareTo(episode_causes_triggers.editText!!.text.toString()) == 0 }?.id,
-            reliefId = reliefs.firstOrNull { it.description.compareTo(episode_relief_action.editText!!.text.toString()) == 0 }?.id
-        )
+        // TODO (Any): fill patch input model
+        epId?.let {id ->
+            val ipm = EpisodePatchInputModel(
+                // ...
+            )
+            viewModel.update(id, ipm)
+        }?: run {
+            val im = EpisodeInputModel(
+                start = start,
+                end = end,
+                intensity = episode_intensity_seekbar.progress,
+                releafWorked = episode_relief_helped.isChecked,
+                localId = locations.firstOrNull { it.description.compareTo(episode_causes_place.editText!!.text.toString()) == 0 }?.id,
+                causeId = causes.firstOrNull { it.description.compareTo(episode_causes_triggers.editText!!.text.toString()) == 0 }?.id,
+                reliefId = reliefs.firstOrNull { it.description.compareTo(episode_relief_action.editText!!.text.toString()) == 0 }?.id
+            )
 
-        viewModel.create(im)
+            viewModel.create(im)
+        }
+
     }
 
 
@@ -268,11 +281,6 @@ class EpisodeFragment : Fragment() {
     private fun addButtonListeners() {
         episode_btn_cancel.setOnClickListener {
             findNavController().popBackStack()
-        }
-
-        episode_btn_remindme.setOnClickListener {
-            findNavController().popBackStack()
-            Toast.makeText(context, "TODO: Notification", Toast.LENGTH_LONG).show()
         }
 
         episode_btn_confirm.setOnClickListener {
@@ -311,6 +319,13 @@ class EpisodeFragment : Fragment() {
             R.layout.dropdown_list_item,
             items)
         (episode_relief_action.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+    }
+
+    // TODO (Any): Setup existing episode
+    // populate fragment fields from this "ep" (arg from the EpisodesList)
+    private fun setupExistingEpisode(ep: Episode) {
+        epId = ep.id
+
     }
 
 

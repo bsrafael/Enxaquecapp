@@ -51,7 +51,7 @@ class MedicinesViewModel: ViewModel() {
         intervals.add(Interval("6/6h", "06:00:00"))
         intervals.add(Interval("8/8h", "08:00:00"))
         intervals.add(Interval("12/12h", "12:00:00"))
-        intervals.add(Interval("1x/dia", "24:00:00"))
+        intervals.add(Interval("1x/dia", "24.00:00:00"))
     }
 
     fun getInterval(selected: String): String {
@@ -60,7 +60,8 @@ class MedicinesViewModel: ViewModel() {
     }
 
     fun getIntervalDisplayValue(selected: String): String {
-        return intervals.filter { i -> i.usefulValue.compareTo(selected) == 0 }[0].displayValue
+        val filtered = intervals.filter { i -> i.usefulValue.compareTo(selected) == 0 }
+        return filtered[0].displayValue
     }
 
     fun loadMedicines() {
@@ -121,14 +122,13 @@ class MedicinesViewModel: ViewModel() {
         })
     }
 
-    // TODO(Rafael) usar esse método no submit do medicamento quando estiver alterando um medicamento existente
     fun update(id: UUID, im: MedicationInputModel) {
         val client = MedicationClient()
 
         client.update(id, im, object: ApiCallback<Medicine> {
 
             override fun success(response: Medicine) {
-                meds.filter { med -> med.id != id }
+                meds = meds.filter { med -> med.id != id } as MutableList<Medicine>
                 meds.add(0, response)
                 medicines.postValue(meds)
                 Log.i("MedicinesViewModel", "medicamento atualizado com sucesso")

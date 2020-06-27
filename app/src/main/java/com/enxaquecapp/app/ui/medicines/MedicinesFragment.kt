@@ -147,25 +147,24 @@ class MedicinesFragment: Fragment() {
     }
 
     private fun validateFields(): Boolean {
-        return (
-            medicine_field_name.editText!!.validate("Qual o nome do medicamento?") { it.isNotEmpty() }
-            &&
-            medicine_field_doses.editText!!.validate("O tratamento é de quantas doses?") { it.isNotEmpty() }
-            &&
-            medicine_field_description.editText!!.validate("O medicamento faz o que?") { it.isNotEmpty() }
-            &&
-            medicine_start_date.editText!!.validate("Qual o primeiro dia do tratamento?") { it.isNotEmpty() }
-            &&
-            medicine_interval.editText!!.validate("De quanto em quanto tempo você toma?") { it.isNotEmpty() }
-        )
+        var valid = true
+        val fields = listOf(
+            medicine_field_name.editText!!,
+            medicine_field_doses.editText!!,
+            medicine_field_description.editText!!,
+            medicine_start_date.editText!!,
+            medicine_interval.editText!!)
+
+        fields.forEach { field ->
+            if (field.text.isNullOrBlank()) {
+                field.error = "Preencha este campo"
+                valid = false
+            }
+        }
+
+        return valid
     }
 
-    /**
-     * TODO(Julio): fix following issue
-     * D/OkHttp: --> POST https://exaquecapp.herokuapp.com/api/medications
-     * I/MedicinesViewModel: falha ao criar o medicamento (400) Specified argument was out of the range of valid values.
-     * Parameter name: O intervalo não pode ser menor ou igual a zero
-     * **/
     private fun submitMedicine() {
         progress.visibility = View.VISIBLE
         val im = MedicationInputModel(
@@ -210,8 +209,8 @@ class MedicinesFragment: Fragment() {
 
         fields.forEach { field ->
             field.apply {
-                this.error = null
                 setText("")
+                error = null
             }
         }
     }
@@ -228,11 +227,16 @@ class MedicinesFragment: Fragment() {
     private fun loadMedicine(med: Medicine) {
         medicine_field_name.editText!!.setText(med.name)
         medicine_start_date.editText!!.setText(SimpleDateFormat("dd/MM/yyyy").format(med.start))
-        medicine_interval.editText!!.setText(viewModel.getIntervalDisplayValue(med.interval))
+        val interval = medicine_interval.editText!! as AutoCompleteTextView
+        interval.apply {
+            setText(viewModel.getIntervalDisplayValue(med.interval), false)
+            setSelection(this.text.count())
+        }
         medicine_field_description.editText!!.setText(med.description)
         medicine_field_doses.editText!!.setText(med.totalDoses.toString())
 
         loadedMedicine = med.id
+
     }
 
 
