@@ -51,7 +51,7 @@ class MedicinesViewModel: ViewModel() {
         intervals.add(Interval("6/6h", "06:00:00"))
         intervals.add(Interval("8/8h", "08:00:00"))
         intervals.add(Interval("12/12h", "12:00:00"))
-        intervals.add(Interval("1x/dia", "24.00:00:00"))
+        intervals.add(Interval("1x/dia", "1.00:00:00"))
     }
 
     fun getInterval(selected: String): String {

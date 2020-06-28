@@ -346,7 +346,7 @@ class EpisodeFragment : Fragment() {
         episode_intensity_seekbar.progress = ep.intensity
         episode_relief_helped.isChecked = ep.releafWorked
 
-        ep.location?.let { location ->
+        ep.local?.let { location ->
             val place = episode_causes_place.editText as AutoCompleteTextView
             place.apply {
                 setText( location.description!!, false )

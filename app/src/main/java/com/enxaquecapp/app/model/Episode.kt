@@ -9,7 +9,7 @@ data class Episode (
     val start: Date,
     val end: Date? = null,
     val intensity: Int,
-    val location: Location? = null,
+    val local: Location? = null,
     val cause: Cause? = null,
     val relief: Relief? = null,
     val releafWorked: Boolean // TODO(Julio) fix typo on backend
