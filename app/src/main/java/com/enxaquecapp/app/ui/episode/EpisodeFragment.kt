@@ -115,8 +115,8 @@ class EpisodeFragment : Fragment() {
 
         viewModel.episode.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                findNavController().popBackStack()
                 viewModel.episode.postValue(null)
+                findNavController().popBackStack()
             }
         })
 
@@ -257,7 +257,13 @@ class EpisodeFragment : Fragment() {
         // TODO (Any): fill patch input model
         epId?.let {id ->
             val ipm = EpisodePatchInputModel(
-                // ...
+                start = start,
+                end = end,
+                intensity = episode_intensity_seekbar.progress,
+                releafWorked = episode_relief_helped.isChecked,
+                localId = locations.firstOrNull { it.description.compareTo(episode_causes_place.editText!!.text.toString()) == 0 }?.id,
+                causeId = causes.firstOrNull { it.description.compareTo(episode_causes_triggers.editText!!.text.toString()) == 0 }?.id,
+                reliefId = reliefs.firstOrNull { it.description.compareTo(episode_relief_action.editText!!.text.toString()) == 0 }?.id
             )
             viewModel.update(id, ipm)
         }?: run {
@@ -326,7 +332,43 @@ class EpisodeFragment : Fragment() {
     private fun setupExistingEpisode(ep: Episode) {
         epId = ep.id
 
+
+        val (startDate, startTime) = SimpleDateFormat("dd/MM/yyyy HH:mm").format(ep.start).split(" ")
+        episode_start_date.editText!!.setText(startDate)
+        episode_start_time.editText!!.setText(startTime)
+
+
+        val (endDate, endTime) = SimpleDateFormat("dd/MM/yyyy HH:mm").format(ep.end).split(" ")
+        episode_end_date.editText!!.setText(endDate)
+        episode_end_time.editText!!.setText(endTime)
+
+
+        episode_intensity_seekbar.progress = ep.intensity
+        episode_relief_helped.isChecked = ep.releafWorked
+
+        ep.location?.let { location ->
+            val place = episode_causes_place.editText as AutoCompleteTextView
+            place.apply {
+                setText( location.description!!, false )
+                setSelection(this.text.count())
+            }
+        }
+
+
+        ep.cause?.let { cause ->
+            val trigger = episode_causes_triggers.editText as AutoCompleteTextView
+            trigger.apply {
+                setText( cause.description!!, false )
+                setSelection(this.text.count())
+            }
+        }
+
+
+        val relief = episode_relief_action.editText as AutoCompleteTextView
+        relief.apply {
+            setText( ep.relief!!.description, false )
+            setSelection(this.text.count())
+        }
+
     }
-
-
 }
